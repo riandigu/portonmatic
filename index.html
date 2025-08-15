@@ -89,6 +89,43 @@
       text-align: center;
       padding: 20px;
     }
+
+    /* === Estilos del carrusel === */
+    .slider {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slides img {
+      width: 100%;
+      flex-shrink: 0;
+      border-radius: 10px;
+    }
+    .slider button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 10;
+    }
+    .slider .prev { left: 10px; }
+    .slider .next { right: 10px; }
+    .slider button:hover { background-color: rgba(0,0,0,0.7); }
+
   </style>
 </head>
 <body>
@@ -112,6 +149,22 @@
     <h2>Quiénes somos</h2>
     <p>Portonmatic SpA, es una empresa chilena dedicada a brindar soluciones completas de seguridad para condominios, pasajes y propiedades particulares. Combinamos automatización, tecnología y robustez para tu tranquilidad.</p>
   </section>
+
+  <!-- ===== Carrusel insertado aquí ===== -->
+  <section id="carrusel" tabindex="-1">
+    <h2>Nuestros Proyectos Destacados</h2>
+    <div class="slider">
+      <div class="slides">
+        <img src="porton_1.png" alt="Portones Eléctricos">
+        <img src="perimetral.png" alt="Cercos Eléctricos">
+        <img src="domiciliaria.png" alt="Puertas Blindadas">
+        <img src="rural_4.png" alt="Luminaria LED">
+      </div>
+      <button class="prev" aria-label="Imagen anterior">&#10094;</button>
+      <button class="next" aria-label="Imagen siguiente">&#10095;</button>
+    </div>
+  </section>
+  <!-- ===== Fin del carrusel ===== -->
 
   <section id="servicios">
     <h2>Nuestros Productos y Servicios</h2>
@@ -212,12 +265,26 @@
   <footer>
     <p>Portonmatic SpA - Tu seguridad, nuestra misión. © 2025</p>
   </footer>
+
+  <!-- === JavaScript del carrusel === -->
+  <script>
+    const slides = document.querySelector('.slides');
+    const images = document.querySelectorAll('.slides img');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    let index = 0;
+
+    function showSlide(i) {
+      if (i < 0) index = images.length - 1;
+      else if (i >= images.length) index = 0;
+      else index = i;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => showSlide(index - 1));
+    nextBtn.addEventListener('click', () => showSlide(index + 1));
+
+    setInterval(() => showSlide(index + 1), 5000); // Auto deslizado cada 5 segundos
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
