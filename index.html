@@ -1,9 +1,10 @@
-lo<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portonmatic SpA - Seguridad integral para tu comunidad</title>
+
   <style>
     body {
       margin: 0;
@@ -90,7 +91,7 @@ lo<!DOCTYPE html>
       padding: 20px;
     }
 
-    /* === Estilos del carrusel === */
+    /* === Carrusel === */
     .slider {
       position: relative;
       width: 90%;
@@ -124,168 +125,161 @@ lo<!DOCTYPE html>
     }
     .slider .prev { left: 10px; }
     .slider .next { right: 10px; }
-    .slider button:hover { background-color: rgba(0,0,0,0.7); }
-
   </style>
 </head>
+
 <body>
-  <header>
-    <img src="logo.png" />
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#servicios">Servicios</a>
-      <a href="#nosotros">Quiénes Somos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
 
-  <section class="hero" id="inicio">
-    <h1>Portonmatic</h1>
-    <p>Seguridad integral para tu comunidad</p>
-    <button class="btn">Solicita tu cotización</button>
-  </section>
+<header>
+  <img src="logo.png" alt="Portonmatic">
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#nosotros">Quiénes Somos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
 
-  <section id="nosotros">
-    <h2>Quiénes somos</h2>
-    <p>Portonmatic SpA, es una empresa chilena dedicada a brindar soluciones completas de seguridad para condominios, pasajes y propiedades particulares. Combinamos automatización, tecnología y robustez para tu tranquilidad.</p>
-  </section>
+<section class="hero" id="inicio">
+  <h1>Portonmatic</h1>
+  <p>Seguridad integral para tu comunidad</p>
+  <button class="btn">Solicita tu cotización</button>
+</section>
 
-  <!-- ===== Carrusel insertado aquí ===== -->
-  <section id="carrusel" tabindex="-1">
-    <h2>Nuestros Proyectos Destacados</h2>
-    <div class="slider">
-      <div class="slides">
-        <img src="porton_1.png" alt="Portones Eléctricos">
-        <img src="perimetral.png" alt="Cercos Eléctricos">
-        <img src="domiciliaria.png" alt="Puertas Blindadas">
-        <img src="rural_4.png" alt="Luminaria LED">
-      </div>
-      <button class="prev" aria-label="Imagen anterior">&#10094;</button>
-      <button class="next" aria-label="Imagen siguiente">&#10095;</button>
+<section id="nosotros">
+  <h2>Quiénes somos</h2>
+  <p>
+    Portonmatic SpA es una empresa chilena dedicada a brindar soluciones completas
+    de seguridad para condominios, pasajes y propiedades particulares.
+  </p>
+</section>
+
+<section id="carrusel">
+  <h2>Nuestros Proyectos Destacados</h2>
+  <div class="slider">
+    <div class="slides">
+      <img src="porton_1.png" alt="Portones Eléctricos">
+      <img src="perimetral.png" alt="Cercos Eléctricos">
+      <img src="domiciliaria.png" alt="Puertas Blindadas">
+      <img src="rural_4.png" alt="Luminaria LED">
     </div>
-  </section>
-  <!-- ===== Fin del carrusel ===== -->
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+  </div>
+</section>
 
-  <section id="servicios">
-    <h2>Nuestros Productos y Servicios</h2>
-    <div class="services">
-      <div class="card">
-        <img src="porton_1.png" alt="Portones Eléctricos" />
-	Portones eléctricos correderos, batientes y autoportantes
-      </div>
-      
-      <div class="card">
-	<img src="perimetral.png" alt="Cercos Eléctricos" />
-	Cercos eléctricos y mallas de seguridad
-      </div>
-      	
-      <div class="card">
-	<img src="domiciliaria.png" alt="Puertas blindadas" />
-	Puertas blindadas domiciliarias, institucionales y comerciales
-      </div>
-	
+<section id="servicios">
+  <h2>Nuestros Productos y Servicios</h2>
 
-      <div class="card">
-        <img src="rural_4.png" alt="Luminaria LED" />
-	Postaciones y luminarias LED para perímetros
-      </div>
+  <div class="services">
 
-      <div class="card">
-        <img src="exterior.png" alt="Video Vigilancia Exterior" />
-	Cámaras de seguridad y sistemas DVR
-      </div>
-
-      <div class="card">
-        <img src="edificio.png" alt="Citofonía y Video Porteros" />
-	Citofonía y videoporteros
-      </div>
-
-      <div class="card">
-        <img src="tablero_2.png" alt="Instalaciones Eléctricas Certificadas" />
-	Instalaciones Eléctricas Certificadas
-      </div>
-
-      <div class="card">
-        <img src="programa_2.png" alt="Servicio Técnico y Programación" />
-	Servicio Técnico y Programación
-      </div>
-
-      <div class="card">
-        <img src="oocc_4.png" alt="Proyectos en Ejecución" />
-	Proyectos en Ejecución
-      </div>
-
+    <div class="card">
+      <img src="porton_1.png">
+      Portones eléctricos correderos, batientes y autoportantes
     </div>
-  </section>
 
-  <section id="beneficios">
-    <h2>¿Por qué elegirnos?</h2>
-    <div class="benefits">
-      <div class="card">
-	<img src="Movil_de_Respuesta.png" alt="Móvil de Respuesta" />
-	Respuesta rápida
-      </div>
+    <div class="card">
+      <img src="perimetral.png">
+      Cercos eléctricos y mallas de seguridad
+    </div>
 
-      <div class="card">
-	<img src="oocc_6.png" alt="Proyectos a medida" />
-    	Proyectos a medida
-      </div>
+    <div class="card">
+      <img src="domiciliaria.png">
+      Puertas blindadas domiciliarias, institucionales y comerciales
+    </div>
 
-      <div class="card">
-	<img src="programa_1.png" alt="Servicio Técnico garantizado" />
-	Servicio técnico garantizado
-      </div>
+    <div class="card">
+      <img src="rural_4.png">
+      Postaciones y luminarias LED para perímetros
+    </div>
 
-      <div class="card">
-	<img src="rural_3.png" alt="Experiencia en comunidades y condominios" />
-	Experiencia en comunidades y condominios</div>
-      </div>
-  </section>
+    <div class="card">
+      <img src="exterior.png">
+      Cámaras de seguridad y sistemas DVR
+    </div>
 
-  <section id="contacto">
-    <h2>Contacto</h2>
-    <p>
-      <img src="whatsapp.png" alt="WhatsApp" style="width:20px; vertical-align:middle; margin-right:5px;" />
-       +56 9 9412 4894
-    </p>
-    <p>
-      <img src="celular.png" alt="Celular" style="width:20px; vertical-align:middle; margin-right:5px;" />
-       +56 9 3668 0868
-    </p>
-    <p>
-      <img src="e_mail.png" alt="e-mail: " style="width:20px; vertical-align:middle; margin-right:5px;" />
-       contacto@portonmatic.cl
-    </p>
-    <p>
-      <img src="web.png" alt="WWW: " style="width:20px; vertical-align:middle; margin-right:5px;" />
-       www.portonmatic.cl
-    </p>
-  </section>
+    <div class="card">
+      <img src="edificio.png">
+      Citofonía y videoporteros
+    </div>
 
-  <footer>
-    <p>Portonmatic SpA - Tu seguridad, nuestra misión. © 2025</p>
-  </footer>
+    <div class="card">
+      <img src="tablero_2.png">
+      Instalaciones eléctricas certificadas
+    </div>
 
-  <!-- === JavaScript del carrusel === -->
-  <script>
-    const slides = document.querySelector('.slides');
-    const images = document.querySelectorAll('.slides img');
-    const prevBtn = document.querySelector('.prev');
-    const nextBtn = document.querySelector('.next');
-    let index = 0;
+    <div class="card">
+      <img src="programa_2.png">
+      Servicio técnico y programación
+    </div>
 
-    function showSlide(i) {
-      if (i < 0) index = images.length - 1;
-      else if (i >= images.length) index = 0;
-      else index = i;
-      slides.style.transform = `translateX(-${index * 100}%)`;
-    }
+    <div class="card">
+      <img src="oocc_4.png">
+      Proyectos en ejecución
+    </div>
 
-    prevBtn.addEventListener('click', () => showSlide(index - 1));
-    nextBtn.addEventListener('click', () => showSlide(index + 1));
+    <!-- === NUEVOS SERVICIOS === -->
 
-    setInterval(() => showSlide(index + 1), 5000); // Auto deslizado cada 5 segundos
-  </script>
-</body>
+    <div class="card">
+      <img src="alarmas_incendio.png">
+      Sistemas de alarmas de incendio y detección temprana
+    </div>
 
-</html>
+    <div class="card">
+      <img src="domotica.png">
+      Tecnología domótica para hogares y comunidades
+    </div>
+
+    <div class="card">
+      <img src="cerrajeria.png">
+      Servicios de cerrajería residencial y comercial
+    </div>
+
+    <div class="card">
+      <img src="alarma_intrusion.png">
+      Alarmas de intrusión y botón de pánico
+    </div>
+
+    <div class="card">
+      <img src="boton_panico.png">
+      Sistemas de botón de pánico para seguridad comunitaria
+    </div>
+
+  </div>
+</section>
+
+<section id="beneficios">
+  <h2>¿Por qué elegirnos?</h2>
+  <div class="benefits">
+    <div class="card">Respuesta rápida</div>
+    <div class="card">Proyectos a medida</div>
+    <div class="card">Servicio técnico garantizado</div>
+    <div class="card">Experiencia en comunidades</div>
+  </div>
+</section>
+
+<section id="contacto">
+  <h2>Contacto</h2>
+  <p>📱 +56 9 9412 4894</p>
+  <p>📱 +56 9 3668 0868</p>
+  <p>✉ contacto@portonmatic.cl</p>
+  <p>🌐 www.portonmatic.cl</p>
+</section>
+
+<footer>
+  Portonmatic SpA © 2025
+</footer>
+
+<script>
+  const slides = document.querySelector('.slides');
+  const images = document.querySelectorAll('.slides img');
+  let index = 0;
+
+  function showSlide(i) {
+    index = (i + images.length) % images.length;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  document.querySelector('.prev').onclick = () => showSlide(index - 1);
+  document.querySelector('.next').onclick = () => showSlide(index + 1);
+  set
