@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Jurídico - Cierre de Pasajes en Chile</title>
+
+<style>
+
+/* Reset */
+body {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  color: #111;
+}
+
+/* Fondo institucional */
+.fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: url('https://images.unsplash.com/photo-1589998059171-988d887df646') no-repeat center center;
+  background-size: cover;
+
+  z-index: -2;
+
+  filter: brightness(1.3) contrast(0.85) grayscale(40%);
+}
+
+/* Capa suave */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(255,255,255,0.6);
+
+  z-index: -1;
+}
+
+/* Contenedor SIN fondo */
+.documento {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 40px;
+  line-height: 1.8;
+}
+
+/* Texto con sombra para legibilidad */
+.documento p,
+.documento div,
+.documento h1,
+.documento h2,
+.documento span {
+  text-shadow: 0 1px 3px rgba(255,255,255,0.7);
+}
+
+/* Encabezado */
+.header {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  text-transform: uppercase;
+  font-size: 22px;
+  margin: 0;
+}
+
+.subinfo {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Sello */
+.sello {
+  text-align: right;
+  margin-top: -50px;
+}
+
+.sello span {
+  border: 2px solid #000;
+  padding: 10px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* Secciones */
+h2 {
+  border-bottom: 1px solid #000;
+  margin-top: 40px;
+}
+
+/* Artículos */
+.articulo {
+  margin: 15px 0;
+}
+
+/* Jurisprudencia */
+.resolucion {
+  border-left: 4px solid #000;
+  padding-left: 15px;
+  margin: 20px 0;
+  font-style: italic;
+}
+
+/* Destacado */
+.destacado {
+  border-left: 4px solid #000;
+  padding: 10px;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+/* Botones */
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: 1px solid #000;
+  text-decoration: none;
+  color: black;
+  background: rgba(255,255,255,0.7);
+}
+
+.btn:hover {
+  background: black;
+  color: white;
+}
+
+/* Firma */
+.firma {
+  margin-top: 60px;
+}
+
+/* Impresión */
+@media print {
+  .fondo, .overlay {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="fondo"></div>
+<div class="overlay"></div>
+
+<div class="documento">
+
+<div class="header">
+  <h1>Informe Jurídico</h1>
+  <div class="subinfo">
+    N° Informe: PJ-2026-001<br>
+    Materia: Cierre de Pasajes por Seguridad<br>
+    Fecha: 2026
+  </div>
+</div>
+
+<div class="sello">
+  
+</div>
+<br>
+<p><strong>Objeto:</strong> Análisis de la normativa aplicable al cierre de calles y pasajes en territorio nacional.</p>
+
+<h2>I. Marco Normativo</h2>
+
+<div class="articulo">
+  <strong>Ley N° 20.499:</strong> Permite el cierre de calles y pasajes bajo autorización municipal.
+</div>
+
+<div class="destacado">
+  El cierre no altera la calidad de bien nacional de uso público.
+</div>
+
+<h2>II. Requisitos</h2>
+
+<div class="articulo">1. Aprobación del 90% de propietarios</div>
+<div class="articulo">2. Autorización municipal</div>
+<div class="articulo">3. Acceso a emergencias</div>
+<div class="articulo">4. No afectar tránsito relevante</div>
+
+<h2>III. Jurisprudencia</h2>
+
+<div class="resolucion">
+  La Corte Suprema ha determinado que el recurso de protección no es la vía idónea para impugnar cierres autorizados.
+</div>
+
+<div class="resolucion">
+  Debe existir equilibrio entre seguridad y libre circulación.
+</div>
+
+<div class="resolucion">
+  La municipalidad puede autorizar o revocar cierres.
+</div>
+
+<h2>IV. Conclusión</h2>
+
+<p>
+El cierre de pasajes es legal si cumple estrictamente la normativa vigente.
+</p>
+
+<div class="destacado">
+  La instalación sin autorización puede implicar sanciones y retiro obligatorio.
+</div>
+
+<h2>V. Evaluación Técnica</h2>
+
+<p>Se recomienda evaluación previa para evitar errores legales.</p>
+
+<a href="https://riandigu.github.io/portonmatic/" class="btn">
+Solicitar evaluación con PORTONMATIC
+</a>
+
+<a href="#" onclick="window.print()" class="btn">
+Descargar / Imprimir PDF
+</a>
+
+<div class="firma">
+  <p>__________________________________</p>
+  <p><strong>Unidad Técnica</strong></p>
+  <p>PORTONMATIC SpA.</p>
+</div>
+
+</div>
+
+</body>
+</html>
