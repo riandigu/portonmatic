@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landing Page</title>
+
+<style>
+footer {
+    background: #111;
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 900px;
+    margin: auto;
+}
+
+.footer-content h3 {
+    margin-bottom: 10px;
+}
+
+.footer-content p {
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+    color: #00e0ff;
+}
+
+.copy {
+    font-size: 12px;
+    opacity: 0.6;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    color: black;
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Imagen de fondo fija */
+.hero::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+
+    background: url('fondo.png') no-repeat center center;
+    background-size: cover;
+
+    z-index: -2;
+    transform: scale(1.05);
+}
+
+/* Capa oscura encima (para mejorar legibilidad) */
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.4);
+
+    z-index: -1;
+}
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    color: white;      /* 🔥 esto lo hace visible */
+    z-index: 10;       /* 🔥 lo pone encima del fondo */
+    width: 90%;
+}
+
+.hero-content h1 {
+    font-size: 52px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* NAV */
+nav {
+    position: fixed;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 🔥 centra verticalmente */
+    padding: 15px 30px;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 110px;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    transition: 0.3s;
+    position: relative;
+    padding: 0 10px;
+}
+/* separador | */
+.menu a:not(:last-child)::after {
+    content: "|";
+    position: absolute;
+    right: -6px;
+    color: #999;
+}
+.menu a:hover {
+    color: #0077ff;
+}
+
+/* HAMBURGUESA */
+.hamburger {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .menu {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background: rgba(0,0,0,0.95);
+        flex-direction: column;
+        width: 220px;
+        display: none;
+        padding: 10px 0;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .menu.active {
+        display: flex;
+    }
+
+    .menu a {
+        color: white;
+        padding: 15px 20px;
+        display: block;
+        text-align: left;
+    }
+
+    .menu a::after {
+        display: none; /* quita el "|" en móvil */
+    }
+
+    .hamburger {
+        display: block;
+        color: black;
+        font-size: 28px;
+    }
+}
+
+/* SECCIONES */
+section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(6px);
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 100%;
+}
+
+/* FORM */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background: #00e0ff;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* SCROLL SUAVE */
+html {
+    scroll-behavior: smooth;
+}
+
+.grid-maquinaria {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.machine-card {
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.machine-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.machine-card:hover {
+    transform: scale(1.03);
+}
+
+/* 🔥 RESPONSIVE */
+@media(max-width: 1024px) {
+    .grid-maquinaria {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    .grid-maquinaria {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 1024px) {
+    .grid-mar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    .grid-mar {
+        grid-template-columns: 1fr;
+    }
+}
+/* GRID MAR BASE */
+.grid-mar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* TABLET */
+@media(max-width: 1024px) {
+    .grid-mar {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* MÓVIL */
+@media(max-width: 600px) {
+    .grid-mar {
+        grid-template-columns: 1fr !important;
+    }
+}
+.sea-card {
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.sea-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.sea-card:hover {
+    transform: scale(1.03);
+}
+
+.product-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.cat {
+    display: block;
+    padding: 12px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.mineria-lista {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mineria-lista li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255,255,255,0.8);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mineria-lista img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+section {
+    scroll-margin-top: 105px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+<div class="logo">
+    <a href="#inicio">
+        <img src="logo.png" alt="">
+    </a>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="menu" id="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#quienes">Quiénes Somos</a>
+        <a href="#productos">Productos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#portafolio">Portafolio</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="inicio">
+
+    <div class="hero-content">
+        <h1>Jin and Yin MINERALS Import and Export SpA.</h1>
+        <p>Conectando mercados estratégicos en minería, energía y comercio internacional.</p>
+    </div>
+
+</div>
+<!-- SECCIONES -->
+<section id="quienes">
+    <div class="card timeline">
+
+        <h2>Quiénes Somos</h2><br>
+
+        <div class="item">
+            <h3>Misión</h3>
+            <p>Conectar mercados estratégicos globales a través de importación, exportación y representación comercial de materias primas e insumos industriales.</p><br>
+        </div>
+
+        <div class="item">
+            <h3>Visión</h3>
+            <p>Ser un referente en comercio internacional, destacando por la eficiencia, confianza y alcance global en sectores estratégicos.</p><br>
+        </div>
+
+        <div class="item">
+            <h3>Alcance</h3>
+            <p>Operaciones en América, Europa y Asia, vinculando proveedores y compradores en mercados de alto valor estratégico.</p><br>
+        </div>
+
+    </div>
+</section>
+
+<!-- 🔥 AQUÍ INSERTAS MINERÍA -->
+<section id="mineria">
+  <div class="card">
+    <h2>Minería y Metales Estratégicos</h2>
+    <p>Compra y venta de minerales metálicos y no metálicos:</p>
+    <ul class="mineria-lista">
+
+  <li>
+    <img src="cobre.jpg" alt="Cobre">
+    <div>
+      <strong>Cobre</strong><br>
+      Concentrado, Cátodos, Nanocobre
+    </div>
+  </li>
+
+  <li>
+    <img src="oro.jpg" alt="Oro">
+    <div>
+      <strong>Oro</strong><br>
+      Arenas, Concentrado, Lingotes
+    </div>
+  </li>
+
+  <li>
+    <img src="litio.jpg" alt="Litio">
+    <div>
+      <strong>Sal con contenido de Litio</strong>
+    </div>
+  </li>
+
+</ul>
+  </div>
+</section>
+
+<section id="maquinaria">
+    <div class="card">
+        <h2>Maquinaria Pesada</h2>
+
+        <p>
+            Importación y representación de maquinaria industrial para los sectores de minería, construcción y logística pesada.
+        </p>
+
+        <div class="grid-maquinaria">
+
+            <div class="machine-card">
+                <img src="excavadoras.jpg" alt="Excavadoras">
+                <h3>Excavadoras</h3>
+            </div>
+
+            <div class="machine-card">
+                <img src="camion-minero.jpg" alt="Camiones Mineros">
+                <h3>Camiones Mineros</h3>
+            </div>
+
+            <div class="machine-card">
+                <img src="perforadora.jpg" alt="Perforadoras">
+                <h3>Perforadoras</h3>
+            </div>
+
+            <div class="machine-card">
+                <img src="cargador.jpg" alt="Cargadores Frontales">
+                <h3>Cargadores Frontales</h3>
+            </div>
+
+	    <!-- 🔥 NUEVA MAQUINARIA -->
+	    <div class="machine-card">
+                <img src="grua.jpg" alt="Grúas Industriales">
+                <h3>Grúas Industriales</h3>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="productos-mar">
+    <div class="card">
+        <h2>Productos del Mar</h2>
+
+        <p>Comercialización nacional e internacional de productos del mar frescos y congelados.</p>
+
+        <div class="grid-mar">
+
+            <div class="sea-card">
+                <img src="pescados.jpg" alt="">
+                <p>Pescados</p>
+            </div>
+
+            <div class="sea-card">
+                <img src="mariscos.jpg" alt="">
+                <p>Mariscos</p>
+            </div>
+
+            <div class="sea-card">
+                <img src="crustaceos.jpg" alt="">
+                <p>Crustáceos</p>
+            </div>
+
+            <div class="sea-card">
+                <img src="algas.jpg" alt="">
+                <p>Algas Marinas</p>
+            </div>
+
+            <div class="sea-card">
+                <img src="erizos.jpg" alt="">
+                <p>Lengua de Erizo</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="productos">
+    <div class="card">
+        <h2>Productos</h2>
+        <p>Seleccione una categoría:</p>
+
+        <div class="product-categories">
+
+            <a href="#mineria" class="cat">⛏️ Minería</a>
+            <a href="#productos-mar" class="cat">🐟 Productos del Mar</a>
+            <a href="#maquinaria" class="cat">🚜 Maquinaria Pesada</a>
+
+        </div>
+    </div>
+</section>
+
+<section id="servicios">
+  <div class="card">
+    <h2>Servicios</h2><br>
+
+    <h3>Comercio Internacional</h3>
+    <p>Gestión de operaciones de importación y exportación de materias primas y productos industriales a nivel global.</p><br>
+
+    <h3>Representación Comercial</h3>
+    <p>Representación de empresas y proveedores en mercados estratégicos de América, Europa y Asia.</p><br>
+
+    <h3>Intermediación de Commodities</h3>
+    <p>Compra y venta de minerales metálicos y no metálicos, incluyendo cobre, oro y productos con contenido de litio.</p><br>
+
+    <h3>Suministro de Productos del Mar</h3>
+    <p>Comercialización nacional e internacional de productos del mar frescos y congelados.</p><br>
+
+    <h3>Maquinaria Pesada</h3>
+    <p>Importación y representación de maquinaria industrial para minería, construcción y logística pesada.</p><br>
+
+  </div>
+</section>
+
+<section id="portafolio">
+  <div class="card">
+    <h2>Portafolio</h2><br>
+
+    <h3>Minería y Commodities</h3>
+    <p>Operaciones enfocadas en comercialización de cobre, oro y minerales estratégicos para mercados internacionales.</p><br>
+
+    <h3>Productos del Mar</h3>
+    <p>Distribución y comercialización de productos del mar en mercados nacionales e internacionales.</p><br>
+
+    <h3>Maquinaria Pesada</h3>
+    <p>Representación e importación de maquinaria industrial para proyectos mineros y de construcción.</p><br>
+
+    <h3>Red de Proveedores</h3>
+    <p>Red internacional de contactos comerciales en América Latina, Asia y Europa.</p><br>
+
+  </div>
+</section>
+
+<section id="contacto">
+    <div class="card">
+        <h2>Contacto</h2>
+
+        <form action="https://formsubmit.co/jorgeeyraud76@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="Nombre" required>
+            <input type="email" name="email" placeholder="Correo" required>
+            <textarea name="message" placeholder="Mensaje" required></textarea>
+
+            <!-- Opciones FormSubmit -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://tusitio.cl/gracias.html">
+
+            <button type="submit">Enviar</button>
+        </form>
+
+    </div>
+</section>
+
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+}
+</script>
+
+<footer>
+    <div class="footer-content">
+        <h3>Jin and Yin MINERALS Import and Export SpA.</h3>
+        <p>Soluciones innovadoras con enfoque moderno y sustentable.</p>
+        <p>Contacto telefónico: +569 98563601</p>
+        <p>This page has been developed by SIMA SpA.</p>
+        <p class="copy">© 2026 Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+}
+
+/* CERRAR MENÚ AL HACER CLICK EN UN LINK */
+document.querySelectorAll(".menu a").forEach(link => {
+    link.addEventListener("click", () => {
+        document.getElementById("menu").classList.remove("active");
+    });
+});
+</script>
+</body>
+</html>
