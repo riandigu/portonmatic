@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portonmatic SpA - Seguridad integral para tu comunidad</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #0A1F44;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #0A1F44;
+      color: white;
+    }
+    header img {
+      height: 50px;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .hero {
+      background: url('fondo.jpg') center/cover no-repeat;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    .btn {
+      background-color: #FFD600;
+      color: #0A1F44;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+    }
+    section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .services, .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    footer {
+      background-color: #0A1F44;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* === Carrusel === */
+    .slider {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slides img {
+      width: 100%;
+      flex-shrink: 0;
+      border-radius: 10px;
+    }
+    .slider button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 10;
+    }
+    .slider .prev { left: 10px; }
+    .slider .next { right: 10px; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Portonmatic">
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#nosotros">Quiénes Somos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <h1>Portonmatic</h1>
+  <p>Seguridad integral para tu comunidad</p>
+
+  <!-- BOTÓN LANDING -->
+  <a href="landing.html" class="btn">
+    Solicitar evaluación
+  </a>
+
+  <!-- BOTÓN MARCO LEGAL -->
+  <a href="https://riandigu.github.io/portonmatic/ley-portones.html" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     class="btn">
+     ¿Tu pasaje se puede cerrar legalmente?
+  </a>
+
+</section>
+
+<section id="nosotros">
+  <h2>Quiénes somos</h2>
+  <p>
+    Portonmatic SpA es una empresa chilena dedicada a brindar soluciones completas
+    de seguridad para condominios, pasajes y propiedades particulares.
+  </p>
+</section>
+
+<section id="carrusel">
+  <h2>Nuestros Proyectos Destacados</h2>
+  <div class="slider">
+    <div class="slides">
+      <img src="porton_1.png" alt="Portones Eléctricos">
+      <img src="perimetral.png" alt="Cercos Eléctricos">
+      <img src="domiciliaria.png" alt="Puertas Blindadas">
+      <img src="rural_4.png" alt="Luminaria LED">
+    </div>
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+  </div>
+</section>
+
+<section id="servicios">
+  <h2>Nuestros Productos y Servicios</h2>
+
+  <div class="services">
+
+    <div class="card">
+      <img src="porton_1.png">
+      Portones eléctricos correderos, batientes y autoportantes
+    </div>
+
+    <div class="card">
+      <img src="perimetral.png">
+      Cercos eléctricos y mallas de seguridad
+    </div>
+
+    <div class="card">
+      <img src="domiciliaria.png">
+      Puertas blindadas domiciliarias, institucionales y comerciales
+    </div>
+
+    <div class="card">
+      <img src="rural_4.png">
+      Postaciones y luminarias LED para perímetros
+    </div>
+
+    <div class="card">
+      <img src="exterior.png">
+      Cámaras de seguridad y sistemas DVR
+    </div>
+
+    <div class="card">
+      <img src="edificio.png">
+      Citofonía y videoporteros
+    </div>
+
+    <div class="card">
+      <img src="tablero_2.png">
+      Instalaciones eléctricas certificadas
+    </div>
+
+    <div class="card">
+      <img src="programa_2.png">
+      Servicio técnico y programación
+    </div>
+
+    <div class="card">
+      <img src="oocc_4.png">
+      Proyectos en ejecución
+    </div>
+
+  </div>
+</section>
+
+<section id="contacto">
+  <h2>Contacto</h2>
+  <p>📱 +56 9 9412 4894</p>
+  <p>📱 +56 9 3668 0868</p>
+  <p>✉ contacto@portonmatic.cl</p>
+  <p>🌐 www.portonmatic.cl</p>
+</section>
+
+<footer>
+  Portonmatic SpA © 2025
+</footer>
+
+<script>
+  const slides = document.querySelector('.slides');
+  const images = document.querySelectorAll('.slides img');
+  let index = 0;
+
+  function showSlide(i) {
+    index = (i + images.length) % images.length;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  document.querySelector('.prev').onclick = () => showSlide(index - 1);
+  document.querySelector('.next').onclick = () => showSlide(index + 1);
+</script>
+
+</body>
+</html>
