@@ -121,6 +121,74 @@
       border-radius: 8px;
       margin-bottom: 10px;
     }
+
+    /* === CALCULADOR DE MOTOR === */
+
+.motor-section {
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.motor-form {
+  max-width: 700px;
+  margin: auto;
+}
+
+.motor-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.motor-form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.motor-btn {
+  display: block;
+  margin: 25px auto 10px;
+  background-color: #FFD600;
+  color: #0A1F44;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.motor-btn:hover {
+  opacity: 0.85;
+}
+
+.motor-result {
+  display: none;
+  margin-top: 25px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 5px solid #FFD600;
+}
+
+.motor-whatsapp {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
     footer {
       background-color: #0A1F44;
       color: white;
@@ -245,7 +313,74 @@
     <button class="next">&#10095;</button>
   </div>
 </section>
+<section id="motor">
 
+  <h2>¿Qué motor necesita tu portón?</h2>
+
+  <div class="motor-section">
+
+    <p style="text-align:center;">
+      Si no sabes qué tipo de motor necesitas, responde estas
+      preguntas y te orientaremos.
+    </p>
+
+    <div class="motor-form">
+
+      <label for="tipoPorton">1. ¿Qué tipo de portón tienes?</label>
+
+      <select id="tipoPorton">
+        <option value="">Selecciona una opción</option>
+        <option value="corredera">Portón corredera</option>
+        <option value="batiente">Portón batiente</option>
+      </select>
+
+
+      <label for="pesoPorton">2. ¿Cuál es el peso aproximado?</label>
+
+      <select id="pesoPorton">
+        <option value="">Selecciona una opción</option>
+        <option value="400">Hasta 400 kg</option>
+        <option value="800">400 - 800 kg</option>
+        <option value="1200">800 - 1.200 kg</option>
+        <option value="mas1200">Más de 1.200 kg</option>
+      </select>
+
+
+      <label for="usoPorton">3. ¿Dónde se utiliza?</label>
+
+      <select id="usoPorton">
+        <option value="">Selecciona una opción</option>
+        <option value="casa">Casa</option>
+        <option value="condominio">Condominio</option>
+        <option value="empresa">Empresa</option>
+      </select>
+
+
+      <button class="motor-btn" onclick="calcularMotor()">
+        ENCONTRAR MI SOLUCIÓN
+      </button>
+
+
+      <div id="motorResult" class="motor-result">
+
+        <h3>Recomendación PortonMatic</h3>
+
+        <p id="resultadoTexto"></p>
+
+        <a id="motorWhatsapp"
+           class="motor-whatsapp"
+           target="_blank"
+           rel="noopener noreferrer">
+           📲 Consultar por WhatsApp
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 <section id="servicios">
   <h2>Nuestros Productos y Servicios</h2>
 
@@ -353,6 +488,73 @@
       nav.classList.remove('active');
     };
   });
+
+  function calcularMotor() {
+
+  const tipo = document.getElementById("tipoPorton").value;
+  const peso = document.getElementById("pesoPorton").value;
+  const uso = document.getElementById("usoPorton").value;
+
+  if (!tipo || !peso || !uso) {
+
+    alert("Por favor, completa las tres opciones.");
+
+    return;
+  }
+
+
+  let recomendacion = "";
+
+
+  if (tipo === "corredera") {
+
+    if (peso === "400") {
+      recomendacion = "Un motor para portón corredera de hasta 400 kg podría ser adecuado para tu caso.";
+
+    } else if (peso === "800") {
+      recomendacion = "Te recomendamos evaluar un motor para portón corredera de hasta 800 kg.";
+
+    } else if (peso === "1200") {
+      recomendacion = "Te recomendamos evaluar un motor para portón corredera de hasta 1.200 kg.";
+
+    } else {
+      recomendacion = "Tu portón requiere una evaluación técnica para determinar el sistema de automatización adecuado.";
+    }
+
+  } else if (tipo === "batiente") {
+
+    recomendacion = "Para un portón batiente se requiere evaluar el peso, dimensiones, cantidad de hojas y ángulo de apertura antes de seleccionar el motor.";
+
+  }
+
+
+  if (uso === "condominio") {
+
+    recomendacion += " Por tratarse de un uso comunitario, también es importante considerar la frecuencia de apertura y cierre.";
+
+  } else if (uso === "empresa") {
+
+    recomendacion += " Para uso empresarial recomendamos considerar un sistema preparado para mayor frecuencia de funcionamiento.";
+
+  }
+
+
+  document.getElementById("resultadoTexto").textContent = recomendacion;
+
+  document.getElementById("motorResult").style.display = "block";
+
+
+  const mensaje =
+    "Hola, quiero consultar por la automatización de mi portón.%0A%0A" +
+    "Tipo: " + tipo + "%0A" +
+    "Peso aproximado: " + peso + " kg%0A" +
+    "Uso: " + uso + "%0A%0A" +
+    "Quisiera una recomendación de PortonMatic.";
+
+
+  document.getElementById("motorWhatsapp").href =
+    "https://wa.me/56994124894?text=" + mensaje;
+}
 </script>
 
 
