@@ -1284,6 +1284,7 @@ if (etapa === "diagnostico_observacion") {
   datos.push(texto);
 
   const observacion = texto.toLowerCase();
+  console.log("Etapa de observación:", etapa, "| Respuesta:", observacion);
 
   if (/sí|si|suciedad|sucias|obstru|objeto|hojas|piedra/.test(observacion)) {
     etapa = "diagnostico2";
