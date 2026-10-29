@@ -1009,9 +1009,15 @@
 </a>
 
 
+
 <script>
-/* === PORTONMATIC: LOGICA INICIAL DEL ASISTENTE === */
+/* =====================================================
+   PORTONMATIC: ASISTENTE VIRTUAL V2.0
+   Lógica de consultas, cotizaciones y diagnóstico
+===================================================== */
+
 (function () {
+
   const formulario = document.getElementById("asistente-formulario");
   const entrada = document.getElementById("asistente-pregunta");
   const mensajes = document.getElementById("asistente-mensajes");
@@ -1025,336 +1031,81 @@
   let tema = "";
   let datos = [];
 
+  const TELEFONO = "56994124894";
+
+  /* =====================================================
+     FUNCIONES GENERALES
+  ===================================================== */
+
+  function normalizar(texto) {
+    return texto
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+  }
+
   function agregarMensaje(texto, tipo) {
     const mensaje = document.createElement("div");
+
     mensaje.className = tipo === "cliente"
       ? "mensaje-cliente"
       : "mensaje-asistente";
+
     mensaje.textContent = texto;
+
     mensajes.appendChild(mensaje);
     mensajes.scrollTop = mensajes.scrollHeight;
   }
 
+  function guardarDato(etiqueta, valor) {
+    const indice = datos.findIndex(d => d.startsWith(etiqueta));
 
+    if (indice >= 0) {
+      datos[indice] = etiqueta + valor;
+    } else {
+      datos.push(etiqueta + valor);
+    }
+  }
 
-function responder(texto) {
-  const t = texto.toLowerCase().trim();
+  function tieneDato(etiqueta) {
+    return datos.some(d => d.startsWith(etiqueta));
+  }
 
-  if (!t) return "";
+  function obtenerDato(etiqueta) {
+    return datos.find(d => d.startsWith(etiqueta)) || "";
+  }
 
-  // Detectar la intención del mensaje
-  const esSaludo =
-    /^(hola|buenos días|buenas tardes|buenas noches|buenas)$/i.test(t);
-
-  const esServicios =
-    /servicios|qué hacen|que hacen|qué ofrecen|que ofrecen|qué instalan|que instalan/.test(t);
-
-  const esUbicacion =
-    /dónde atienden|donde atienden|ubicación|ubicacion|en qué comunas|en que comunas/.test(t);
-
- 
-const esComercial =
-  /cotiz|precio|valor|cuánto cuesta|cuanto cuesta|presupuesto|instalación|instalacion|instalar|reparación|reparacion|reparar|mantención|mantencion|automatiz|portón nuevo|porton nuevo|cerco eléctrico|cerco electrico|barrera|citófono|citofono|videoportero|iluminación|iluminacion|puerta de seguridad/.test(t);
-
-  const esTecnico =
-    /no cierra|no abre|no funciona|se detiene|se devuelve|vuelve a abrir|fotocelda|control remoto|motor.*falla|port[oó]n.*falla|port[oó]n.*no/.test(t);
-
-  // Identificar datos comerciales que el cliente ya entregó
-  const tipoPorton = /corredera|corredizo/.test(t) ? "corredera" :
-    /batiente|abatible/.test(t) ? "batiente" :
-    /autoportante|autoportado/.test(t) ? "autoportante" : "";
-
-  const usoCasa = /mi casa|en casa|vivienda|domicilio|residencial/.test(t);
-
-  const medidas = t.match(/(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)\s*(?:de\s*)?(?:ancho|largo)?(?:\s*(?:por|x|×)\s*(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m))?/);
-
-  const ancho = medidas ? medidas[1] : "";
-  const alto = medidas && medidas[2] ? medidas[2] : "";
-
-  // Saludo: comenzar una conversación nueva
-  if (esSaludo) {
+  function reiniciar() {
     etapa = "inicio";
     tema = "";
     datos = [];
-    return "¡Hola! Soy el asistente de PortonMatic. Puedo orientarte sobre problemas con portones y motores, o ayudarte con instalaciones, reparaciones y otros servicios. ¿Qué necesitas?";
   }
 
-  
- // Consultas y seguimiento sobre cámaras de seguridad
-  if (etapa === "camaras") {
-  
-    if (/instalación nueva|instalacion nueva|instalar|instalación|instalacion/.test(t)) {
-      etapa = "camaras1";
-      tema = "camaras";
-      datos = [];
-  
-      return "Perfecto. ¿Actualmente tienes cámaras instaladas en la propiedad o sería un sistema completamente nuevo?";
-    }
-  
-    if (/reparación|reparacion|reparar|mantención|mantencion/.test(t)) {
-      etapa = "inicio";
-      tema = "";
-      datos = [];
-  
-      return "Podemos orientarte sobre cámaras y sistemas DVR. ¿En qué comuna está instalado el sistema y qué falla presenta?";
-    }
-  
-    return "¿Necesitas una instalación nueva de cámaras, reparar un sistema existente o consultar por mantención?";
-  }
-
-// Primera etapa: identificar si existen cámaras instaladas
-if (etapa === "camaras1") {
-  datos.push("Estado actual: " + texto);
-
-  etapa = "camaras2";
-
-  return "Perfecto. ¿En qué comuna necesitas la instalación y qué área deseas vigilar: casa, condominio o empresa?";
-}
-  // Segunda etapa de instalación de cámaras
-  if (etapa === "camaras2") {
-    datos.push(texto);
-
-    etapa = "camaras3";
-
-    return "Perfecto. ¿Cuántas cámaras necesitas aproximadamente y qué zonas deseas cubrir?";
-  }
-  
-
-  // Tercera etapa: registrar cantidad y zonas de las cámaras
-  if (etapa === "camaras3") {
-    datos.push(texto);
-
-    etapa = "camaras4";
-
-    return "Perfecto. ¿Dónde necesitas instalar las cámaras: interiores, exteriores o ambas?";
-  }
-
-  // Cuarta etapa: tipo de instalación de cámaras
-  if (etapa === "camaras4") {
-    datos.push(texto);
-  
-    etapa = "camaras5";
-  
-    return "¿Necesitas que el sistema incluya un grabador DVR/NVR para almacenar las grabaciones?";
-  }
-
-  
-// Quinta etapa: generar resumen profesional y enviar por WhatsApp
-if (etapa === "camaras5") {
-  datos.push(texto);
-
-  const estadoActual = datos[0].replace("Estado actual: ", "");
-
-  const resumen =
-    "SOLICITUD DE COTIZACIÓN\n" +
-    "PORTÓNMATIC - SISTEMAS DE SEGURIDAD\n\n" +
-    "Servicio: Instalación de cámaras de seguridad\n" +
-    "Tipo de proyecto: Instalación nueva\n" +
-    "Estado actual: " + estadoActual + "\n" +
-    "Comuna y propiedad: " + datos[1] + "\n" +
-    "Cantidad y cobertura: " + datos[2] + "\n" +
-    "Ubicación: " + datos[3] + "\n" +
-    "Sistema de grabación: " + datos[4] + "\n" +
-    "Acceso remoto desde celular: Incluido en la propuesta\n\n" +
-    "Solicito evaluación y cotización del proyecto.";
-
-  const enlace =
-    "https://wa.me/56994124894?text=" +
-    encodeURIComponent("Hola, PortónMatic.\n\n" + resumen);
-
-  etapa = "inicio";
-  tema = "";
-
-  const contenedor = document.createElement("div");
-  contenedor.className = "mensaje-asistente";
-  contenedor.textContent =
-    "Perfecto. Hemos preparado tu solicitud de cotización:\n\n" +
-    resumen +
-    "\n\nPuedes continuar por WhatsApp para solicitar la evaluación y cotización de tu proyecto.";
-
-  mensajes.appendChild(contenedor);
-
-  const boton = document.createElement("a");
-  boton.href = enlace;
-  boton.target = "_blank";
-  boton.rel = "noopener noreferrer";
-  boton.textContent = "Solicitar cotización por WhatsApp";
-  boton.className = "asistente-boton";
-  boton.style.display = "inline-block";
-  boton.style.marginTop = "10px";
-  boton.style.textDecoration = "none";
-
-  mensajes.appendChild(boton);
-  mensajes.scrollTop = mensajes.scrollHeight;
-
-  return "";
-}
-  if (
-    /cámaras|camaras|cámara|camara/.test(t) &&
-    !/cotiz|precio|valor|cuánto cuesta|cuanto cuesta|presupuesto/.test(t)
-  ) {
-    etapa = "camaras";
-    tema = "camaras";
-
-    return "Sí, PortónMatic ofrece cámaras de seguridad y sistemas DVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
-  }
-
-
-  // Pregunta general por servicios
-  if (esServicios) {
-    etapa = "inicio";
-    tema = "";
-    datos = [];
-    return "PortónMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía, sistemas eléctricos de respaldo y otros servicios de construcción. ¿Cuál te interesa?";
-  }
-
-  // Consulta de cobertura
-  if (esUbicacion) {
-    etapa = "inicio";
-    tema = "";
-    datos = [];
-    return "PortónMatic contempla atención en El Tabo, Colina y Santiago. ¿En qué comuna necesitas el servicio? La disponibilidad debe confirmarse.";
-  }
-
-  
-  // Gestionar la solicitud comercial
-  if (
-    esComercial ||
-    etapa === "comercial" ||
-    etapa === "comercial2" ||
-    etapa === "comercial3"
-  ) {
-    const nuevaSolicitud =
-      esComercial &&
-      etapa !== "comercial" &&
-      etapa !== "comercial2" &&
-      etapa !== "comercial3";
-
-    if (nuevaSolicitud) {
-      datos = [];
-      tema = "comercial";
-    }
-
-    // Registrar los datos que el cliente ya entregó.
-    if (/corredera|corredizo/.test(t)) {
-      if (!datos.some(d => d.startsWith("Tipo:"))) {
-        datos.push("Tipo: portón corredera");
-      }
-    } else if (/batiente|abatible/.test(t)) {
-      if (!datos.some(d => d.startsWith("Tipo:"))) {
-        datos.push("Tipo: portón batiente");
-      }
-    } else if (/autoportante/.test(t)) {
-      if (!datos.some(d => d.startsWith("Tipo:"))) {
-        datos.push("Tipo: portón autoportante");
-      }
-    }
-
-    if (/mi casa|en casa|vivienda|domicilio|residencial/.test(t) &&
-        !datos.some(d => d.startsWith("Uso:"))) {
-      datos.push("Uso: vivienda particular");
-    }
-
-    const medidasTexto = t.match(
-      /(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)\s*(?:de\s*)?(?:ancho)?\s*(?:por|x|×)\s*(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)/
-    );
-
-    if (medidasTexto &&
-        !datos.some(d => d.startsWith("Medidas indicadas:"))) {
-      datos.push(
-        "Medidas indicadas: " +
-        medidasTexto[1].replace(",", ".") +
-        " m de ancho por " +
-        medidasTexto[2].replace(",", ".") +
-        " m de alto"
-      );
-    }
-
-    // Registrar comuna y necesidad de motor.
-    const comunas = [
-      "colina", "santiago", "el tabo"
-    ];
-
-    const comunaEncontrada = comunas.find(comuna =>
-      new RegExp("\\b" + comuna + "\\b", "i").test(t)
-    );
-
-    if (comunaEncontrada &&
-        !datos.some(d => d.startsWith("Comuna:"))) {
-      datos.push(
-        "Comuna: " +
-        comunaEncontrada.replace(/\b\w/g, letra => letra.toUpperCase())
-      );
-    }
-
-    if (/sí|si|necesito|incluir|con motor|motor automático|motor automatico/.test(t) &&
-        /motor|automatiz|incluir|sí|si/.test(t) &&
-        !datos.some(d => d.startsWith("Automatización:"))) {
-      datos.push("Automatización: requiere motor automático");
-    }
-
-    if (/no|sin motor|no necesito/.test(t) &&
-        /motor|automatiz/.test(t) &&
-        !datos.some(d => d.startsWith("Automatización:"))) {
-      datos.push("Automatización: no requiere motor");
-    }
-
-    const tieneTipo = datos.some(d => d.startsWith("Tipo:"));
-    const tieneUso = datos.some(d => d.startsWith("Uso:"));
-    const tieneMedidas = datos.some(d => d.startsWith("Medidas indicadas:"));
-    const tieneComuna = datos.some(d => d.startsWith("Comuna:"));
-    const tieneMotor = datos.some(d => d.startsWith("Automatización:"));
-
-    if (!tieneTipo) {
-      etapa = "comercial";
-      return "¿Qué tipo de portón necesitas: corredera, batiente o autoportante?";
-    }
-
-    if (!tieneUso) {
-      etapa = "comercial";
-      return "¿El portón es para una casa, un condominio o una empresa?";
-    }
-
-    if (!tieneMedidas) {
-      etapa = "comercial2";
-      return "¿Qué medidas tendrá aproximadamente el portón: ancho por alto?";
-    }
-
-    if (!tieneComuna || !tieneMotor) {
-      etapa = "comercial3";
-
-      if (!tieneComuna && !tieneMotor) {
-        return "¿En qué comuna se instalará y necesitas que incluya motor automático?";
-      }
-
-      if (!tieneComuna) {
-        return "¿En qué comuna se realizará la instalación?";
-      }
-
-      return "¿Necesitas que el portón incluya motor automático?";
-    }
-
-    // Datos suficientes para preparar la consulta.
-    etapa = "inicio";
-
-    const resumen =
-      "Solicitud de cotización PortonMatic:\n" +
-      datos.join("\n");
+  function crearBotonWhatsApp(titulo, resumen) {
 
     const enlace =
-      "https://wa.me/56994124894?text=" +
-      encodeURIComponent("Hola, PortonMatic. " + resumen);
+      "https://wa.me/" + TELEFONO +
+      "?text=" +
+      encodeURIComponent(
+        "Hola, PortónMatic.\n\n" +
+        titulo +
+        "\n\n" +
+        resumen
+      );
 
     const contenedor = document.createElement("div");
     contenedor.className = "mensaje-asistente";
+
     contenedor.textContent =
-      "Perfecto. Ya recopilamos los antecedentes iniciales:\n" +
-      datos.join("\n") +
-      "\nPuedes continuar por WhatsApp para consultar una cotización. El precio definitivo requiere evaluación.";
+      "Hemos recopilado los siguientes antecedentes:\n\n" +
+      resumen +
+      "\n\nPuedes continuar por WhatsApp para solicitar una evaluación.";
 
     mensajes.appendChild(contenedor);
 
     const boton = document.createElement("a");
+
     boton.href = enlace;
     boton.target = "_blank";
     boton.rel = "noopener noreferrer";
@@ -1367,144 +1118,682 @@ if (etapa === "camaras5") {
     mensajes.appendChild(boton);
     mensajes.scrollTop = mensajes.scrollHeight;
 
-    return "";
+    reiniciar();
   }
 
- 
-  // Diagnóstico técnico: iniciar solo si no hay uno en curso
-  if (esTecnico && etapa !== "diagnostico" &&
-      etapa !== "diagnostico2" && etapa !== "diagnostico3") {
-    tema = "tecnico";
-    etapa = "diagnostico";
-    datos = [texto];
+  function finalizarSolicitud(titulo, introduccion) {
 
-    return "Vamos a revisar las posibles causas. ¿Qué hace exactamente el portón: el motor no responde, intenta moverse y se detiene, o comienza a cerrar y vuelve a abrirse? Si puedes, dime también si es corredera o batiente.";
-  }
+    const resumen = datos.join("\n");
 
-
-  
-if (etapa === "diagnostico") {
-  datos.push(texto);
-
-  const respuestaCliente = texto.toLowerCase();
-
-  if (
-    /vuelve a abrir|se devuelve|comienza a cerrar y vuelve|empieza a cerrar y vuelve/.test(respuestaCliente)
-  ) {
-    etapa = "diagnostico_observacion";
-
-    return "Ese comportamiento puede deberse a una obstrucción en el recorrido, a la activación de las fotoceldas o al sistema de detección de obstáculos del motor. Todavía no podemos confirmar la causa. Sin tocar cables ni desmontar componentes, ¿puedes observar si hay suciedad en las fotoceldas o algún objeto que interrumpa su línea de visión o el recorrido del portón?";
-  }
-
-  etapa = "diagnostico2";
-
-  return "Gracias por la información. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
-}
-
-
-if (etapa === "diagnostico_observacion") {
-  datos.push(texto);
-
-  const observacion = texto.toLowerCase();
-  console.log("Etapa de observación:", etapa, "| Respuesta:", observacion);
-
-  
-  // Primero: detectar respuestas negativas.
-  if (/^(?:no\b|nada\b|ninguno\b|ninguna\b)|\bno\s+(?:veo|hay|se observa)\b/.test(observacion)) {
-    etapa = "diagnostico2";
-
-    return "Gracias. Aunque no se observe suciedad ni obstáculos, todavía podría existir un problema de alineación, funcionamiento de las fotoceldas o ajuste del motor. No manipules conexiones ni ajustes internos. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
-  }
-
-  // Después: detectar suciedad u obstáculos afirmados.
-  if (/sí|si|suciedad|sucias|obstru|objeto|hojas|piedra/.test(observacion)) {
-    etapa = "diagnostico2";
-
-    return "Podría existir una obstrucción o interferencia, pero aún no está confirmado. Si puedes hacerlo sin acercarte al portón en movimiento, retira únicamente objetos sueltos del recorrido y limpia suavemente la superficie exterior de las fotoceldas, sin desmontarlas ni manipular cables. Después, dime si el problema continúa. Si el portón se mueve inesperadamente, deja de accionarlo y solicita una revisión técnica.";
-  }
-
-
-  etapa = "diagnostico2";
-
-  return "Gracias por la observación. No podemos confirmar la causa solo con ese dato. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
-}
-
-  if (etapa === "diagnostico2") {
-    datos.push(texto);
-    etapa = "diagnostico3";
-    return "Entiendo. ¿En qué comuna está instalado el portón? Así podremos orientar el siguiente paso para una posible revisión técnica.";
-  }
-
-  
-if (etapa === "diagnostico3") {
-  datos.push(texto);
-
-  const resumen =
-    "Consulta técnica PortónMatic:\n" +
-    datos.join("\n");
-
-  const enlace =
-    "https://wa.me/56994124894?text=" +
-    encodeURIComponent(
-      "Hola, PortónMatic. Quisiera consultar por una revisión técnica.\n\n" +
+    crearBotonWhatsApp(
+      titulo,
       resumen
     );
 
-  etapa = "inicio";
-  tema = "";
-
-  const contenedor = document.createElement("div");
-  contenedor.className = "mensaje-asistente";
-  contenedor.textContent =
-    "Gracias. Hemos recopilado estos antecedentes:\n" +
-    datos.join("\n") +
-    "\nNo podemos confirmar la causa a distancia. Puedes consultar por WhatsApp la disponibilidad de una revisión técnica.";
-
-  mensajes.appendChild(contenedor);
-
-  const boton = document.createElement("a");
-  boton.href = enlace;
-  boton.target = "_blank";
-  boton.rel = "noopener noreferrer";
-  boton.textContent = "Consultar por WhatsApp";
-  boton.className = "asistente-boton";
-  boton.style.display = "inline-block";
-  boton.style.marginTop = "10px";
-  boton.style.textDecoration = "none";
-
-  mensajes.appendChild(boton);
-  mensajes.scrollTop = mensajes.scrollHeight;
-
-  return "";
-}
-
-
-  if (/urgente|emergencia|24 horas|24\/7/.test(t)) {
-    etapa = "inicio";
-    datos = [];
-    return "PortónMatic contempla atención móvil 24/7, sujeta a disponibilidad. ¿En qué comuna estás y qué problema necesitas resolver?";
+    return "";
   }
 
-  return "Quiero orientarte correctamente. ¿Tu consulta es sobre una falla técnica, una instalación o cotización, o necesitas información sobre los servicios de PortonMatic?";
-}
+  /* =====================================================
+     DETECCIÓN DE INTENCIONES
+  ===================================================== */
 
+  function responder(texto) {
 
-  
-formulario.addEventListener("submit", function (evento) {
-  evento.preventDefault();
+    const t = normalizar(texto);
 
-  const texto = entrada.value.trim();
-  if (!texto) return;
+    if (!t) return "";
 
-  agregarMensaje(texto, "cliente");
-  entrada.value = "";
+    const esSaludo =
+      /^(hola|buenos dias|buenas tardes|buenas noches|buenas|saludos)$/i.test(t);
 
-  const respuesta = responder(texto);
+    const esServicios =
+      /servicios|que hacen|que ofrecen|que instalan|que trabajan/.test(t);
 
-  if (respuesta) {
-    agregarMensaje(respuesta, "asistente");
+    const esUbicacion =
+      /donde atienden|ubicacion|en que comunas|que comunas|cobertura/.test(t);
+
+    const mencionaCamaras =
+      /camaras|camara|dvr|nvr|videovigilancia|video vigilancia/.test(t);
+
+    const mencionaPorton =
+      /porton|portones|corredera|corredizo|batiente|abatible|autoportante|autoportado/.test(t);
+
+    const esTecnico =
+      /no cierra|no abre|no funciona|se detiene|se devuelve|vuelve a abrir|fotocelda|control remoto|motor.*falla|porton.*falla|porton.*no responde|no responde.*motor/.test(t);
+
+    const mencionaServicioAdicional =
+      /cerco electrico|cerco|barrera|citofono|videoportero|puerta de seguridad|iluminacion|malla de seguridad|respaldo electrico|construccion/.test(t);
+
+    const esCotizacion =
+      /cotiz|precio|valor|cuanto cuesta|presupuesto|instalacion|instalar|reparacion|reparar|mantencion|mantener|automatiz/.test(t);
+
+    const esUrgente =
+      /urgente|emergencia|24 horas|24\/7/.test(t);
+
+    const comunas = [
+      "colina",
+      "santiago",
+      "el tabo",
+      "maipu",
+      "puente alto",
+      "las condes",
+      "providencia",
+      "quilicura",
+      "lampa",
+      "chicureo",
+      "conchali",
+      "la florida",
+      "pudahuel",
+      "penalolen",
+      "vitacura",
+      "nunoa",
+      "san bernardo"
+    ];
+
+    const comunaEncontrada = comunas.find(comuna =>
+      new RegExp("\\b" + comuna + "\\b").test(t)
+    );
+
+    /* =================================================
+       SALUDO
+       No interrumpe un cuestionario en curso.
+    ================================================= */
+
+    if (esSaludo) {
+
+      if (etapa !== "inicio") {
+        return "¡Hola nuevamente! Podemos continuar con la consulta que estábamos revisando. Si deseas comenzar otra, escribe «reiniciar».";
+      }
+
+      reiniciar();
+
+      return "¡Hola! Soy el asistente de PortónMatic. Puedo orientarte sobre portones, motores, cámaras de seguridad, reparaciones y otros servicios. ¿Qué necesitas?";
+    }
+
+    if (/^(reiniciar|comenzar de nuevo|empezar de nuevo)$/.test(t)) {
+      reiniciar();
+      return "Perfecto. Comencemos nuevamente. ¿Qué servicio necesitas consultar?";
+    }
+
+    /* =================================================
+       CONSULTAS GENERALES
+    ================================================= */
+
+    if (esServicios && etapa === "inicio") {
+
+      return "PortónMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía, sistemas eléctricos de respaldo y otros servicios de construcción. ¿Cuál te interesa?";
+    }
+
+    if (esUbicacion && etapa === "inicio") {
+
+      return "PortónMatic contempla atención en El Tabo, Colina y Santiago. También podemos evaluar solicitudes en otras comunas, según disponibilidad. ¿En qué comuna necesitas el servicio?";
+    }
+
+    /* =================================================
+       FLUJO DE CÁMARAS DE SEGURIDAD
+    ================================================= */
+
+    if (etapa === "camaras") {
+
+      if (/instalacion|instalar|nuevo|nueva/.test(t)) {
+
+        etapa = "camaras1";
+        tema = "camaras";
+        datos = [];
+
+        return "Perfecto. ¿Actualmente tienes cámaras instaladas en la propiedad o sería un sistema completamente nuevo?";
+      }
+
+      if (/reparacion|reparar|mantencion|mantener|falla|problema/.test(t)) {
+
+        etapa = "camaras_reparacion_comuna";
+
+        return "Podemos orientarte. ¿En qué comuna está instalado el sistema de cámaras?";
+      }
+
+      return "¿Necesitas una instalación nueva de cámaras, reparar un sistema existente o consultar por mantención?";
+    }
+
+    /* Reparación de cámaras: comuna */
+
+    if (etapa === "camaras_reparacion_comuna") {
+
+      guardarDato("Comuna: ", texto);
+
+      etapa = "camaras_reparacion_falla";
+
+      return "Gracias. ¿Qué problema presenta el sistema? Por ejemplo: cámaras sin imagen, DVR que no graba, pérdida de conexión o problemas de visualización.";
+    }
+
+    /* Reparación de cámaras: falla */
+
+    if (etapa === "camaras_reparacion_falla") {
+
+      guardarDato("Falla informada: ", texto);
+
+      finalizarSolicitud(
+        "SOLICITUD DE REVISIÓN TÉCNICA DE CÁMARAS",
+        "PORTONMATIC - SISTEMAS DE SEGURIDAD\n\n" +
+        datos.join("\n") +
+        "\n\nSolicito orientación y evaluación técnica del sistema."
+      );
+
+      return "";
+    }
+
+    /* Instalación nueva: estado actual */
+
+    if (etapa === "camaras1") {
+
+      guardarDato("Estado actual: ", texto);
+
+      etapa = "camaras2";
+
+      return "Perfecto. ¿En qué comuna necesitas la instalación y qué tipo de propiedad es: casa, condominio o empresa?";
+    }
+
+    /* Instalación nueva: comuna y propiedad */
+
+    if (etapa === "camaras2") {
+
+      guardarDato("Comuna y propiedad: ", texto);
+
+      etapa = "camaras3";
+
+      return "¿Cuántas cámaras necesitas aproximadamente y qué zonas deseas cubrir?";
+    }
+
+    /* Cantidad y cobertura */
+
+    if (etapa === "camaras3") {
+
+      guardarDato("Cantidad y cobertura: ", texto);
+
+      etapa = "camaras4";
+
+      return "¿Dónde necesitas instalar las cámaras: interiores, exteriores o ambas?";
+    }
+
+    /* Ubicación */
+
+    if (etapa === "camaras4") {
+
+      guardarDato("Ubicación: ", texto);
+
+      etapa = "camaras5";
+
+      return "¿Necesitas que el sistema incluya un grabador DVR/NVR para almacenar las grabaciones?";
+    }
+
+    /* Grabación y resumen */
+
+    if (etapa === "camaras5") {
+
+      guardarDato("Sistema de grabación: ", texto);
+
+      guardarDato(
+        "Acceso remoto: ",
+        "Por evaluar según el equipo y la configuración requerida."
+      );
+
+      finalizarSolicitud(
+        "SOLICITUD DE COTIZACIÓN DE CÁMARAS",
+        "PORTONMATIC - SISTEMAS DE SEGURIDAD\n\n" +
+        "Servicio: Instalación de cámaras de seguridad\n" +
+        datos.join("\n") +
+        "\n\nSolicito evaluación y cotización del proyecto."
+      );
+
+      return "";
+    }
+
+    /* Detección inicial de cámaras */
+
+    if (
+      mencionaCamaras &&
+      etapa === "inicio"
+    ) {
+
+      etapa = "camaras";
+      tema = "camaras";
+
+      return "Sí, PortónMatic ofrece cámaras de seguridad y sistemas DVR/NVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
+    }
+
+    /* =================================================
+       COTIZACIÓN DE PORTONES
+    ================================================= */
+
+    const etapaComercial = [
+      "comercial",
+      "comercial2",
+      "comercial3"
+    ].includes(etapa);
+
+    const nuevaSolicitudPorton =
+      etapa === "inicio" &&
+      (
+        mencionaPorton ||
+        (
+          esCotizacion &&
+          /porton|motor|automatiz/.test(t)
+        )
+      );
+
+    if (etapaComercial || nuevaSolicitudPorton) {
+
+      if (nuevaSolicitudPorton) {
+        datos = [];
+        tema = "comercial";
+      }
+
+      /* Tipo de portón */
+
+      if (/corredera|corredizo/.test(t) && !tieneDato("Tipo:")) {
+        guardarDato("Tipo: ", "Portón corredera");
+      }
+
+      if (/batiente|abatible/.test(t) && !tieneDato("Tipo:")) {
+        guardarDato("Tipo: ", "Portón batiente");
+      }
+
+      if (/autoportante|autoportado/.test(t) && !tieneDato("Tipo:")) {
+        guardarDato("Tipo: ", "Portón autoportante");
+      }
+
+      /* Uso */
+
+      if (
+        /casa|condominio|empresa|vivienda|domicilio|residencial/.test(t) &&
+        !tieneDato("Uso:")
+      ) {
+
+        let uso = "Por definir";
+
+        if (/condominio/.test(t)) uso = "Condominio";
+        else if (/empresa/.test(t)) uso = "Empresa";
+        else if (/casa|vivienda|domicilio|residencial/.test(t)) uso = "Vivienda particular";
+
+        guardarDato("Uso: ", uso);
+      }
+
+      /* Medidas */
+
+      const medidasTexto = t.match(
+        /(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)\s*(?:de\s*)?(?:ancho)?\s*(?:por|x|×)\s*(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)/
+      );
+
+      if (medidasTexto && !tieneDato("Medidas indicadas:")) {
+
+        guardarDato(
+          "Medidas indicadas: ",
+          medidasTexto[1].replace(",", ".") +
+          " m de ancho por " +
+          medidasTexto[2].replace(",", ".") +
+          " m de alto"
+        );
+      }
+
+      /* Reconocer medidas pendientes antes de preguntar */
+
+      if (
+        /no las tengo|no se|no lo se|por definir|desconozco|aun no|todavia no/.test(t) &&
+        !tieneDato("Medidas indicadas:")
+      ) {
+        guardarDato(
+          "Medidas indicadas: ",
+          "Pendientes de evaluación"
+        );
+      }
+
+      /* Comuna */
+
+      if (comunaEncontrada && !tieneDato("Comuna:")) {
+
+        guardarDato(
+          "Comuna: ",
+          comunaEncontrada.replace(/\b\w/g, letra => letra.toUpperCase())
+        );
+      }
+
+      /* Motor */
+
+      if (
+        /motor|automatiz/.test(t) &&
+        !tieneDato("Automatización:")
+      ) {
+
+        if (/no|sin motor|no necesito|no requiere/.test(t)) {
+          guardarDato("Automatización: ", "No requiere motor");
+        } else {
+          guardarDato("Automatización: ", "Requiere motor automático");
+        }
+
+      } else if (
+        /^(si|sí|claro|por supuesto|correcto)$/.test(t) &&
+        etapa === "comercial3" &&
+        !tieneDato("Automatización:")
+      ) {
+
+        guardarDato("Automatización: ", "Requiere motor automático");
+
+      } else if (
+        /^(no|ninguno)$/.test(t) &&
+        etapa === "comercial3" &&
+        !tieneDato("Automatización:")
+      ) {
+
+        guardarDato("Automatización: ", "No requiere motor");
+      }
+
+      /* Verificación de antecedentes */
+
+      const tieneTipo = tieneDato("Tipo:");
+      const tieneUso = tieneDato("Uso:");
+      const tieneMedidas = tieneDato("Medidas indicadas:");
+      const tieneComuna = tieneDato("Comuna:");
+      const tieneMotor = tieneDato("Automatización:");
+
+      if (!tieneTipo) {
+        etapa = "comercial";
+        return "¿Qué tipo de portón necesitas: corredera, batiente o autoportante?";
+      }
+
+      if (!tieneUso) {
+        etapa = "comercial";
+        return "¿El portón es para una casa, un condominio o una empresa?";
+      }
+
+      if (!tieneMedidas) {
+        etapa = "comercial2";
+        return "¿Qué medidas tendrá aproximadamente el portón: ancho por alto? Si todavía no las conoces, puedes indicarlo.";
+      }
+
+      if (!tieneComuna || !tieneMotor) {
+
+        etapa = "comercial3";
+
+        if (!tieneComuna && !tieneMotor) {
+          return "¿En qué comuna se instalará y necesitas que incluya motor automático?";
+        }
+
+        if (!tieneComuna) {
+          return "¿En qué comuna se realizará la instalación?";
+        }
+
+        return "¿Necesitas que el portón incluya motor automático?";
+      }
+
+      finalizarSolicitud(
+        "SOLICITUD DE COTIZACIÓN DE PORTÓN",
+        "PORTONMATIC - PORTONES Y AUTOMATIZACIÓN\n\n" +
+        datos.join("\n") +
+        "\n\nSolicito evaluación y cotización del proyecto. El precio definitivo requiere evaluación."
+      );
+
+      return "";
+    }
+
+    /* =================================================
+       OTROS SERVICIOS
+    ================================================= */
+
+    if (
+      etapa === "inicio" &&
+      mencionaServicioAdicional
+    ) {
+
+      tema = "otros";
+      datos = [];
+
+      guardarDato("Servicio solicitado: ", texto);
+
+      etapa = "otros_comuna";
+
+      return "Perfecto. ¿En qué comuna necesitas este servicio?";
+    }
+
+    if (etapa === "otros_comuna") {
+
+      guardarDato("Comuna: ", texto);
+
+      etapa = "otros_detalle";
+
+      return "Gracias. ¿Podrías describir brevemente qué necesitas instalar, reparar o evaluar?";
+    }
+
+    if (etapa === "otros_detalle") {
+
+      guardarDato("Descripción de la solicitud: ", texto);
+
+      finalizarSolicitud(
+        "CONSULTA POR SERVICIOS PORTONMATIC",
+        "PORTONMATIC - SERVICIOS INTEGRALES\n\n" +
+        datos.join("\n") +
+        "\n\nSolicito orientación y evaluación del servicio."
+      );
+
+      return "";
+    }
+
+    /* =================================================
+       DIAGNÓSTICO TÉCNICO DE PORTONES
+    ================================================= */
+
+    if (
+      esTecnico &&
+      etapa === "inicio"
+    ) {
+
+      tema = "tecnico";
+      etapa = "diagnostico";
+      datos = [];
+
+      guardarDato("Problema inicial: ", texto);
+
+      return "Vamos a revisar las posibles causas. ¿Qué hace exactamente el portón: el motor no responde, intenta moverse y se detiene, o comienza a cerrar y vuelve a abrirse? Si puedes, dime también si es corredera o batiente.";
+    }
+
+    /* Primera evaluación */
+
+    if (etapa === "diagnostico") {
+
+      guardarDato("Comportamiento informado: ", texto);
+
+      if (
+        /vuelve a abrir|se devuelve|comienza a cerrar y vuelve|empieza a cerrar y vuelve/.test(t)
+      ) {
+
+        etapa = "diagnostico_observacion";
+
+        return "Ese comportamiento puede deberse a una obstrucción, a la activación de las fotoceldas o al sistema de detección de obstáculos del motor. Todavía no podemos confirmar la causa. Sin tocar cables ni desmontar componentes, ¿puedes observar si hay suciedad en las fotoceldas o algún objeto que interrumpa su línea de visión o el recorrido del portón?";
+      }
+
+      etapa = "diagnostico2";
+
+      return "Gracias por la información. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+    }
+
+    /* Observación de fotoceldas */
+
+    if (etapa === "diagnostico_observacion") {
+
+      guardarDato("Observación de fotoceldas y recorrido: ", texto);
+
+      if (
+        /^(no|nada|ninguno|ninguna)/.test(t) ||
+        /no veo|no hay|no se observa/.test(t)
+      ) {
+
+        etapa = "diagnostico2";
+
+        return "Gracias. Aunque no se observe suciedad ni obstáculos, todavía podría existir un problema de alineación, funcionamiento de las fotoceldas o ajuste del motor. No manipules conexiones ni ajustes internos. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+      }
+
+      if (
+        /si|suciedad|sucias|obstru|objeto|hojas|piedra/.test(t)
+      ) {
+
+        etapa = "diagnostico_comprobar";
+
+        return "Podría existir una obstrucción o interferencia, pero aún no está confirmado. Si puedes hacerlo sin acercarte al portón en movimiento, retira únicamente objetos sueltos del recorrido y limpia suavemente la superficie exterior de las fotoceldas, sin desmontarlas ni manipular cables. Después, dime si el problema continúa. Si el portón se mueve inesperadamente, deja de accionarlo y solicita una revisión técnica.";
+      }
+
+      etapa = "diagnostico2";
+
+      return "Gracias por la observación. No podemos confirmar la causa solo con ese dato. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+    }
+
+    /* Comprobar si persiste la falla */
+
+    if (etapa === "diagnostico_comprobar") {
+
+      guardarDato("Resultado después de la limpieza o revisión visual: ", texto);
+
+      etapa = "diagnostico2";
+
+      return "Gracias. Esa información nos ayudará a orientar la revisión. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+    }
+
+    /* Frecuencia y síntomas */
+
+    if (etapa === "diagnostico2") {
+
+      guardarDato("Frecuencia y síntomas adicionales: ", texto);
+
+      etapa = "diagnostico3";
+
+      return "Entiendo. ¿En qué comuna está instalado el portón? Así podremos orientar el siguiente paso para una posible revisión técnica.";
+    }
+
+    /* Comuna y cierre del diagnóstico */
+
+    if (etapa === "diagnostico3") {
+
+      guardarDato("Comuna: ", texto);
+
+      finalizarSolicitud(
+        "SOLICITUD DE REVISIÓN TÉCNICA",
+        "PORTONMATIC - DIAGNÓSTICO DE PORTONES\n\n" +
+        datos.join("\n") +
+        "\n\nSolicito orientación y disponibilidad para una revisión técnica. La causa de la falla requiere evaluación presencial."
+      );
+
+      return "";
+    }
+
+    /* =================================================
+       ATENCIÓN DE URGENCIAS
+    ================================================= */
+
+    if (esUrgente && etapa === "inicio") {
+
+      tema = "urgente";
+      datos = [];
+
+      etapa = "urgencia_comuna";
+
+      return "PortónMatic contempla atención móvil 24/7, sujeta a disponibilidad. ¿En qué comuna estás y qué problema necesitas resolver?";
+    }
+
+    if (etapa === "urgencia_comuna") {
+
+      guardarDato("Comuna: ", texto);
+
+      etapa = "urgencia_problema";
+
+      return "Gracias. Describe brevemente la emergencia o el problema que necesitas resolver.";
+    }
+
+    if (etapa === "urgencia_problema") {
+
+      guardarDato("Problema informado: ", texto);
+
+      finalizarSolicitud(
+        "SOLICITUD DE ATENCIÓN URGENTE",
+        "PORTONMATIC - ATENCIÓN TÉCNICA\n\n" +
+        datos.join("\n") +
+        "\n\nSolicito confirmar disponibilidad de atención."
+      );
+
+      return "";
+    }
+
+    /* =================================================
+       PRIMER CONTACTO Y DETECCIÓN DE INTENCIONES
+    ================================================= */
+
+    if (etapa === "inicio") {
+
+      if (mencionaCamaras) {
+
+        etapa = "camaras";
+
+        return "Sí, PortónMatic ofrece cámaras de seguridad y sistemas DVR/NVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
+      }
+
+      if (mencionaPorton) {
+
+        etapa = "comercial";
+        datos = [];
+
+        if (/corredera|corredizo/.test(t)) {
+          guardarDato("Tipo: ", "Portón corredera");
+        } else if (/batiente|abatible/.test(t)) {
+          guardarDato("Tipo: ", "Portón batiente");
+        } else if (/autoportante|autoportado/.test(t)) {
+          guardarDato("Tipo: ", "Portón autoportante");
+        }
+
+        return "Perfecto. Podemos orientarte con la cotización. ¿El portón es para una casa, un condominio o una empresa?";
+      }
+
+      if (mencionaServicioAdicional) {
+
+        etapa = "otros_comuna";
+        datos = [];
+
+        guardarDato("Servicio solicitado: ", texto);
+
+        return "Perfecto. ¿En qué comuna necesitas este servicio?";
+      }
+
+      if (esUrgente) {
+
+        etapa = "urgencia_comuna";
+
+        return "PortónMatic contempla atención móvil 24/7, sujeta a disponibilidad. ¿En qué comuna estás y qué problema necesitas resolver?";
+      }
+
+    }
+
+    return "Quiero orientarte correctamente. ¿Tu consulta es sobre una falla técnica, una instalación o cotización, o necesitas información sobre los servicios de PortonMatic?";
+
   }
-});
+
+  /* =====================================================
+     ENVÍO DEL FORMULARIO
+  ===================================================== */
+
+  formulario.addEventListener("submit", function (evento) {
+
+    evento.preventDefault();
+
+    const texto = entrada.value.trim();
+
+    if (!texto) return;
+
+    agregarMensaje(texto, "cliente");
+
+    entrada.value = "";
+
+    const respuesta = responder(texto);
+
+    if (respuesta) {
+      agregarMensaje(respuesta, "asistente");
+    }
+
+  });
 
 })();
 </script>
