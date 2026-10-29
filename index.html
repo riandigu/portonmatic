@@ -892,7 +892,7 @@
   <div class="footer-bottom">
 
     <p>
-      Portonmatic SpA © 2026
+      PortonMatic SpA © 2026
     </p>
 
     <p>
@@ -1080,25 +1080,36 @@ const esComercial =
   }
 
   
-  // Consultas y seguimiento sobre cámaras de seguridad
- if (/instalación nueva|instalacion nueva|instalar|instalación|instalacion/.test(t)) {
-  etapa = "camaras1";
-  tema = "camaras";
-  datos = [];
-
-  return "Perfecto. ¿Actualmente tienes cámaras instaladas en la propiedad o sería un sistema completamente nuevo?";
-}
-
+ // Consultas y seguimiento sobre cámaras de seguridad
+  if (etapa === "camaras") {
+  
+    if (/instalación nueva|instalacion nueva|instalar|instalación|instalacion/.test(t)) {
+      etapa = "camaras1";
+      tema = "camaras";
+      datos = [];
+  
+      return "Perfecto. ¿Actualmente tienes cámaras instaladas en la propiedad o sería un sistema completamente nuevo?";
+    }
+  
     if (/reparación|reparacion|reparar|mantención|mantencion/.test(t)) {
       etapa = "inicio";
       tema = "";
       datos = [];
-
+  
       return "Podemos orientarte sobre cámaras y sistemas DVR. ¿En qué comuna está instalado el sistema y qué falla presenta?";
     }
-
+  
     return "¿Necesitas una instalación nueva de cámaras, reparar un sistema existente o consultar por mantención?";
   }
+
+// Primera etapa: identificar si existen cámaras instaladas
+if (etapa === "camaras1") {
+  datos.push("Estado actual: " + texto);
+
+  etapa = "camaras2";
+
+  return "Perfecto. ¿En qué comuna necesitas la instalación y qué área deseas vigilar: casa, condominio o empresa?";
+}
   // Segunda etapa de instalación de cámaras
   if (etapa === "camaras2") {
     datos.push(texto);
