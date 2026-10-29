@@ -1079,6 +1079,18 @@ const esComercial =
     return "¡Hola! Soy el asistente de PortonMatic. Puedo orientarte sobre problemas con portones y motores, o ayudarte con instalaciones, reparaciones y otros servicios. ¿Qué necesitas?";
   }
 
+  // Consultas informativas sobre cámaras de seguridad
+  if (
+    /cámaras|camaras|cámara|camara/.test(t) &&
+    !/cotiz|precio|valor|cuánto cuesta|cuanto cuesta|presupuesto/.test(t)
+  ) {
+    etapa = "inicio";
+    tema = "";
+    datos = [];
+
+    return "Sí, PortonMatic ofrece cámaras de seguridad y sistemas DVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
+  }
+
   // Pregunta general por servicios
   if (esServicios) {
     etapa = "inicio";
