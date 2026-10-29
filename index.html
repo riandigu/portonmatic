@@ -1272,14 +1272,49 @@ function responder(texto) {
     return "Entiendo. ¿En qué comuna está instalado el portón? Así podremos orientar el siguiente paso para una posible revisión técnica.";
   }
 
-  if (etapa === "diagnostico3") {
-    datos.push(texto);
-    etapa = "inicio";
-    tema = "";
-    return "Gracias. Hemos recopilado estos antecedentes: " +
-      datos.join(" / ") +
-      ". No podemos confirmar la causa a distancia, pero puedes consultar por WhatsApp la disponibilidad de una revisión técnica.";
-  }
+  
+if (etapa === "diagnostico3") {
+  datos.push(texto);
+
+  const resumen =
+    "Consulta técnica PortonMatic:\n" +
+    datos.join("\n");
+
+  const enlace =
+    "https://wa.me/56994124894?text=" +
+    encodeURIComponent(
+      "Hola, PortonMatic. Quisiera consultar por una revisión técnica.\n\n" +
+      resumen
+    );
+
+  etapa = "inicio";
+  tema = "";
+
+  const contenedor = document.createElement("div");
+  contenedor.className = "mensaje-asistente";
+  contenedor.textContent =
+    "Gracias. Hemos recopilado estos antecedentes:\n" +
+    datos.join("\n") +
+    "\nNo podemos confirmar la causa a distancia. Puedes consultar por WhatsApp la disponibilidad de una revisión técnica.";
+
+  mensajes.appendChild(contenedor);
+
+  const boton = document.createElement("a");
+  boton.href = enlace;
+  boton.target = "_blank";
+  boton.rel = "noopener noreferrer";
+  boton.textContent = "Consultar por WhatsApp";
+  boton.className = "asistente-boton";
+  boton.style.display = "inline-block";
+  boton.style.marginTop = "10px";
+  boton.style.textDecoration = "none";
+
+  mensajes.appendChild(boton);
+  mensajes.scrollTop = mensajes.scrollHeight;
+
+  return "";
+}
+
 
   if (/urgente|emergencia|24 horas|24\/7/.test(t)) {
     etapa = "inicio";
