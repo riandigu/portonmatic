@@ -1109,45 +1109,16 @@ const esComercial =
     return "Perfecto. ¿Cuántas cámaras necesitas aproximadamente y qué zonas deseas cubrir?";
   }
   
-  // Tercera etapa: generar solicitud de cotización de cámaras
+
+  // Tercera etapa: registrar cantidad y zonas de las cámaras
   if (etapa === "camaras3") {
     datos.push(texto);
 
-    const resumen =
-      "Solicitud de cotización de cámaras de seguridad PortonMatic:\n" +
-      datos.join("\n");
+    etapa = "camaras4";
 
-    const enlace =
-      "https://wa.me/56994124894?text=" +
-      encodeURIComponent("Hola, PortonMatic. " + resumen);
-
-    etapa = "inicio";
-    tema = "";
-
-    const contenedor = document.createElement("div");
-    contenedor.className = "mensaje-asistente";
-    contenedor.textContent =
-      "Perfecto. Hemos recopilado los siguientes antecedentes:\n" +
-      datos.join("\n") +
-      "\nPuedes continuar por WhatsApp para solicitar una cotización. El precio definitivo requiere evaluación.";
-
-    mensajes.appendChild(contenedor);
-
-    const boton = document.createElement("a");
-    boton.href = enlace;
-    boton.target = "_blank";
-    boton.rel = "noopener noreferrer";
-    boton.textContent = "Solicitar cotización por WhatsApp";
-    boton.className = "asistente-boton";
-    boton.style.display = "inline-block";
-    boton.style.marginTop = "10px";
-    boton.style.textDecoration = "none";
-
-    mensajes.appendChild(boton);
-    mensajes.scrollTop = mensajes.scrollHeight;
-
-    return "";
+    return "Perfecto. ¿Dónde necesitas instalar las cámaras: interiores, exteriores o ambas?";
   }
+
 
   if (
     /cámaras|camaras|cámara|camara/.test(t) &&
