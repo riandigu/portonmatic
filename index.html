@@ -1119,7 +1119,14 @@ const esComercial =
     return "Perfecto. ¿Dónde necesitas instalar las cámaras: interiores, exteriores o ambas?";
   }
 
+// Cuarta etapa: tipo de instalación de cámaras
+if (etapa === "camaras4") {
+  datos.push(texto);
 
+  etapa = "camaras5";
+
+  return "¿Necesitas que el sistema incluya un grabador DVR/NVR para almacenar las grabaciones?";
+}
   if (
     /cámaras|camaras|cámara|camara/.test(t) &&
     !/cotiz|precio|valor|cuánto cuesta|cuanto cuesta|presupuesto/.test(t)
