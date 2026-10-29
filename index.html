@@ -362,6 +362,98 @@
   }
 
 }
+    /* SECCIÓN QUIÉNES SOMOS */
+.nosotros-section {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 70px 20px;
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(10, 31, 68, 0.96),
+      rgba(7, 24, 47, 0.94)
+    );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Cuadro translúcido */
+.nosotros-card {
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+  padding: 40px 45px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.nosotros-card h2 {
+  margin: 0 0 20px;
+  color: #FFD600;
+  font-size: 2rem;
+}
+
+.nosotros-card h3 {
+  margin: 0 auto 25px;
+  max-width: 720px;
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.nosotros-card p {
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.nosotros-card .nosotros-cierre {
+  margin: 28px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFD600;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Adaptación a teléfonos */
+@media (max-width: 600px) {
+  .nosotros-section {
+    padding: 40px 15px;
+  }
+
+  .nosotros-card {
+    padding: 28px 22px;
+    border-radius: 14px;
+  }
+
+  .nosotros-card h2 {
+    font-size: 1.65rem;
+  }
+
+  .nosotros-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .nosotros-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+}
   </style>
 </head>
 
@@ -401,39 +493,41 @@
   </a>
 </section>
 
-<section id="nosotros">
-  <h2>Quiénes somos</h2>
+<section id="nosotros" class="nosotros-section">
+  <div class="nosotros-card">
 
-  <h3 style="text-align: center; color: #0A1F44;">
-    PortonMatic SpA: Soluciones que integran tecnología, seguridad y funcionalidad.
-  </h3>
+    <h2>Quiénes somos</h2>
 
-  <p>
-    Somos una empresa chilena orientada al desarrollo e
-    implementación de soluciones de seguridad para condominios,
-    comunidades residenciales, pasajes y propiedades particulares.
-  </p>
+    <h3>
+      Soluciones que integran tecnología, seguridad y funcionalidad.
+    </h3>
 
-  <p>
-    Integramos tecnología, automatización y servicios técnicos
-    para mejorar la seguridad, facilitar el control de accesos
-    y contribuir a la protección de las personas y sus bienes.
-  </p>
+    <p>
+      Somos una empresa chilena orientada al desarrollo e implementación
+      de soluciones de seguridad para condominios, comunidades residenciales,
+      pasajes y propiedades particulares.
+    </p>
 
-  <p>
-    Nuestro enfoque es entregar soluciones adaptadas a las
-    necesidades de cada proyecto, desde la automatización de
-    portones y los sistemas de videovigilancia hasta la instalación
-    de cercos perimetrales, citofonía, iluminación y otros
-    servicios complementarios.
-  </p>
+    <p>
+      Integramos tecnología, automatización y servicios técnicos para mejorar
+      la seguridad, facilitar el control de accesos y contribuir a la protección
+      de las personas y sus bienes.
+    </p>
 
-  <p style="text-align: center; font-weight: bold;">
-    En PortonMatic, trabajamos para que tus accesos y espacios privados
-    sean más seguros, funcionales y confiables.
-  </p>
+    <p>
+      Nuestro enfoque es entregar soluciones adaptadas a las necesidades de
+      cada proyecto, desde la automatización de portones y los sistemas de
+      videovigilancia hasta la instalación de cercos perimetrales, citofonía,
+      iluminación y otros servicios complementarios.
+    </p>
+
+    <p class="nosotros-cierre">
+      En PortonMatic, trabajamos para que tus accesos sean más seguros,
+      funcionales y confiables.
+    </p>
+
+  </div>
 </section>
-
   </p>
 </section>
 
