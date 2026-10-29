@@ -1081,13 +1081,12 @@ const esComercial =
 
   
   // Consultas y seguimiento sobre cámaras de seguridad
-  if (etapa === "camaras") {
-    if (/instalación nueva|instalacion nueva|instalar|instalación|instalacion/.test(t)) {
-  etapa = "camaras2";
+ if (/instalación nueva|instalacion nueva|instalar|instalación|instalacion/.test(t)) {
+  etapa = "camaras1";
   tema = "camaras";
   datos = [];
 
-  return "Perfecto. PortonMatic ofrece cámaras de seguridad y sistemas DVR. ¿En qué comuna necesitas la instalación y qué área deseas vigilar: casa, condominio o empresa?";
+  return "Perfecto. ¿Actualmente tienes cámaras instaladas en la propiedad o sería un sistema completamente nuevo?";
 }
 
     if (/reparación|reparacion|reparar|mantención|mantencion/.test(t)) {
