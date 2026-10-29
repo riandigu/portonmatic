@@ -1094,53 +1094,158 @@ function responder(texto) {
     return "PortonMatic contempla atención en El Tabo, Colina y Santiago. ¿En qué comuna necesitas el servicio? La disponibilidad debe confirmarse.";
   }
 
-  // Iniciar o actualizar una solicitud comercial
-  if (esComercial || etapa === "comercial" || etapa === "comercial2" ||
-      etapa === "comercial3") {
+  
+  // Gestionar la solicitud comercial
+  if (
+    esComercial ||
+    etapa === "comercial" ||
+    etapa === "comercial2" ||
+    etapa === "comercial3"
+  ) {
+    const nuevaSolicitud =
+      esComercial &&
+      etapa !== "comercial" &&
+      etapa !== "comercial2" &&
+      etapa !== "comercial3";
 
-    if (etapa !== "comercial" && etapa !== "comercial2" &&
-        etapa !== "comercial3") {
+    if (nuevaSolicitud) {
       datos = [];
+      tema = "comercial";
     }
 
-    tema = "comercial";
-
-    if (t.includes("corredera") || t.includes("corredizo")) {
-      datos.push("Tipo: portón corredera");
-    } else if (t.includes("batiente") || t.includes("abatible")) {
-      datos.push("Tipo: portón batiente");
-    } else if (t.includes("autoportante")) {
-      datos.push("Tipo: portón autoportante");
+    // Registrar los datos que el cliente ya entregó.
+    if (/corredera|corredizo/.test(t)) {
+      if (!datos.some(d => d.startsWith("Tipo:"))) {
+        datos.push("Tipo: portón corredera");
+      }
+    } else if (/batiente|abatible/.test(t)) {
+      if (!datos.some(d => d.startsWith("Tipo:"))) {
+        datos.push("Tipo: portón batiente");
+      }
+    } else if (/autoportante/.test(t)) {
+      if (!datos.some(d => d.startsWith("Tipo:"))) {
+        datos.push("Tipo: portón autoportante");
+      }
     }
 
-    if (usoCasa) datos.push("Uso: vivienda particular");
-    if (ancho && alto) {
-      datos.push("Medidas indicadas: " + ancho + " m de ancho por " + alto + " m de alto");
+    if (/mi casa|en casa|vivienda|domicilio|residencial/.test(t) &&
+        !datos.some(d => d.startsWith("Uso:"))) {
+      datos.push("Uso: vivienda particular");
     }
 
-    // Evitar repetir preguntas si ya tenemos tipo y uso
-    if (tipoPorton && usoCasa && !(ancho && alto)) {
+    const medidasTexto = t.match(
+      /(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)\s*(?:de\s*)?(?:ancho)?\s*(?:por|x|×)\s*(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)/
+    );
+
+    if (medidasTexto &&
+        !datos.some(d => d.startsWith("Medidas indicadas:"))) {
+      datos.push(
+        "Medidas indicadas: " +
+        medidasTexto[1].replace(",", ".") +
+        " m de ancho por " +
+        medidasTexto[2].replace(",", ".") +
+        " m de alto"
+      );
+    }
+
+    // Registrar comuna y necesidad de motor.
+    const comunas = [
+      "colina", "santiago", "el tabo"
+    ];
+
+    const comunaEncontrada = comunas.find(comuna =>
+      new RegExp("\\b" + comuna + "\\b", "i").test(t)
+    );
+
+    if (comunaEncontrada &&
+        !datos.some(d => d.startsWith("Comuna:"))) {
+      datos.push(
+        "Comuna: " +
+        comunaEncontrada.replace(/\b\w/g, letra => letra.toUpperCase())
+      );
+    }
+
+    if (/sí|si|necesito|incluir|con motor|motor automático|motor automatico/.test(t) &&
+        /motor|automatiz|incluir|sí|si/.test(t) &&
+        !datos.some(d => d.startsWith("Automatización:"))) {
+      datos.push("Automatización: requiere motor automático");
+    }
+
+    if (/no|sin motor|no necesito/.test(t) &&
+        /motor|automatiz/.test(t) &&
+        !datos.some(d => d.startsWith("Automatización:"))) {
+      datos.push("Automatización: no requiere motor");
+    }
+
+    const tieneTipo = datos.some(d => d.startsWith("Tipo:"));
+    const tieneUso = datos.some(d => d.startsWith("Uso:"));
+    const tieneMedidas = datos.some(d => d.startsWith("Medidas indicadas:"));
+    const tieneComuna = datos.some(d => d.startsWith("Comuna:"));
+    const tieneMotor = datos.some(d => d.startsWith("Automatización:"));
+
+    if (!tieneTipo) {
+      etapa = "comercial";
+      return "¿Qué tipo de portón necesitas: corredera, batiente o autoportante?";
+    }
+
+    if (!tieneUso) {
+      etapa = "comercial";
+      return "¿El portón es para una casa, un condominio o una empresa?";
+    }
+
+    if (!tieneMedidas) {
       etapa = "comercial2";
-      return "¡Perfecto! Entonces buscas instalar un portón " + tipoPorton +
-        " para tu casa. ¿Qué medidas tendrá aproximadamente: ancho por alto? Si aún no las conoces, podemos continuar con los demás antecedentes.";
+      return "¿Qué medidas tendrá aproximadamente el portón: ancho por alto?";
     }
 
-    if (tipoPorton && ancho && alto) {
+    if (!tieneComuna || !tieneMotor) {
       etapa = "comercial3";
-      return "Gracias. Tengo estos antecedentes: portón " + tipoPorton +
-        ", de " + ancho + " m de ancho por " + alto +
-        " m de alto" + (usoCasa ? ", para vivienda particular" : "") +
-        ". ¿En qué comuna se instalará y necesitas que incluya motor automático?";
+
+      if (!tieneComuna && !tieneMotor) {
+        return "¿En qué comuna se instalará y necesitas que incluya motor automático?";
+      }
+
+      if (!tieneComuna) {
+        return "¿En qué comuna se realizará la instalación?";
+      }
+
+      return "¿Necesitas que el portón incluya motor automático?";
     }
 
-    if (etapa === "comercial2" || etapa === "comercial3") {
-      datos.push(texto);
-      etapa = "comercial3";
-      return "Gracias por ese dato. ¿En qué comuna se realizará la instalación y necesitas incluir automatización con motor?";
-    }
+    // Datos suficientes para preparar la consulta.
+    etapa = "inicio";
 
-    etapa = "comercial";
-    return "Con gusto te orientamos. ¿Qué tipo de portón necesitas: corredera, batiente o autoportante? Si ya conoces las medidas y si es para una casa, condominio o empresa, indícamelo para no hacerte preguntas innecesarias.";
+    const resumen =
+      "Solicitud de cotización PortonMatic:\n" +
+      datos.join("\n");
+
+    const enlace =
+      "https://wa.me/56994124894?text=" +
+      encodeURIComponent("Hola, PortonMatic. " + resumen);
+
+    const contenedor = document.createElement("div");
+    contenedor.className = "mensaje-asistente";
+    contenedor.textContent =
+      "Perfecto. Ya recopilamos los antecedentes iniciales:\n" +
+      datos.join("\n") +
+      "\nPuedes continuar por WhatsApp para consultar una cotización. El precio definitivo requiere evaluación.";
+
+    mensajes.appendChild(contenedor);
+
+    const boton = document.createElement("a");
+    boton.href = enlace;
+    boton.target = "_blank";
+    boton.rel = "noopener noreferrer";
+    boton.textContent = "Continuar por WhatsApp";
+    boton.className = "asistente-boton";
+    boton.style.display = "inline-block";
+    boton.style.marginTop = "10px";
+    boton.style.textDecoration = "none";
+
+    mensajes.appendChild(boton);
+    mensajes.scrollTop = mensajes.scrollHeight;
+
+    return "";
   }
 
   // Diagnóstico técnico
