@@ -1100,7 +1100,14 @@ const esComercial =
 
     return "¿Necesitas una instalación nueva de cámaras, reparar un sistema existente o consultar por mantención?";
   }
+  // Segunda etapa de instalación de cámaras
+  if (etapa === "camaras2") {
+    datos.push(texto);
 
+    etapa = "camaras3";
+
+    return "Perfecto. ¿Cuántas cámaras necesitas aproximadamente y qué zonas deseas cubrir?";
+  }
   if (
     /cámaras|camaras|cámara|camara/.test(t) &&
     !/cotiz|precio|valor|cuánto cuesta|cuanto cuesta|presupuesto/.test(t)
