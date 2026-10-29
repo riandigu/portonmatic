@@ -1260,11 +1260,25 @@ function responder(texto) {
   }
 
 
-  if (etapa === "diagnostico") {
-    datos.push(texto);
-    etapa = "diagnostico2";
-    return "Gracias. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+  
+if (etapa === "diagnostico") {
+  datos.push(texto);
+
+  const respuestaCliente = texto.toLowerCase();
+
+  if (
+    /vuelve a abrir|se devuelve|comienza a cerrar y vuelve|empieza a cerrar y vuelve/.test(respuestaCliente)
+  ) {
+    etapa = "diagnostico_observacion";
+
+    return "Ese comportamiento puede deberse a una obstrucción en el recorrido, a la activación de las fotoceldas o al sistema de detección de obstáculos del motor. Todavía no podemos confirmar la causa. Sin tocar cables ni desmontar componentes, ¿puedes observar si hay suciedad en las fotoceldas o algún objeto que interrumpa su línea de visión o el recorrido del portón?";
   }
+
+  etapa = "diagnostico2";
+
+  return "Gracias por la información. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+}
+
 
   if (etapa === "diagnostico2") {
     datos.push(texto);
