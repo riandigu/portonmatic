@@ -258,6 +258,95 @@
     }
     .slider .prev { left: 10px; }
     .slider .next { right: 10px; }
+
+    /* === FOOTER PORTONMATIC === */
+
+.footer-portonmatic {
+  background-color: #07182f;
+  color: white;
+  padding: 45px 30px 20px;
+}
+
+.footer-contacto {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-icon {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #007bb5;
+  color: #00a8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.footer-info span {
+  display: block;
+  color: #8b9bb0;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.footer-info a,
+.footer-info p {
+  margin: 0;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.footer-info a:hover {
+  color: #00a8e8;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  color: #8b9bb0;
+  font-size: 12px;
+}
+
+.footer-bottom p {
+  margin: 5px 0;
+}
+
+
+/* === VERSIÓN CELULAR === */
+
+@media (max-width: 768px) {
+
+  .footer-contacto {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .footer-item {
+    justify-content: flex-start;
+  }
+
+  .footer-portonmatic {
+    padding: 35px 20px 20px;
+  }
+
+}
   </style>
 </head>
 
@@ -456,11 +545,75 @@
   <p>📱 +56 9 9412 4894</p>
 </section>
 
-<footer>
-  Portonmatic SpA © 2025<br>
-  This site has been developed by SIMA SpA.<br>
-  All rigth reserved<br>
-  Santiago de Chile
+<footer class="footer-portonmatic">
+
+  <div class="footer-contacto">
+
+    <!-- EMAIL -->
+    <div class="footer-item">
+
+      <div class="footer-icon">
+        ✉
+      </div>
+
+      <div class="footer-info">
+        <span>EMAIL</span>
+        <a href="mailto:contacto@portonmatic.cl">
+          contacto@portonmatic.cl
+        </a>
+      </div>
+
+    </div>
+
+
+    <!-- WHATSAPP -->
+    <div class="footer-item">
+
+      <div class="footer-icon">
+        ☎
+      </div>
+
+      <div class="footer-info">
+        <span>WHATSAPP</span>
+        <a href="https://wa.me/56994124894"
+           target="_blank"
+           rel="noopener noreferrer">
+          +56 9 9412 4894
+        </a>
+      </div>
+
+    </div>
+
+
+    <!-- UBICACIÓN -->
+    <div class="footer-item">
+
+      <div class="footer-icon">
+        📍
+      </div>
+
+      <div class="footer-info">
+        <span>UBICACIÓN</span>
+        <p>Santiago - Región Metropolitana, Chile</p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    <p>
+      Portonmatic SpA © 2026
+    </p>
+
+    <p>
+      Sitio desarrollado por SIMA SpA.
+    </p>
+
+  </div>
+
 </footer>
 
 <script>
