@@ -1036,64 +1036,121 @@
   }
 
 
+
 function responder(texto) {
   const t = texto.toLowerCase().trim();
 
   if (!t) return "";
 
-  // 1. Detectar primero una nueva intención, aunque exista
-  // una conversación técnica o comercial pendiente.
+  // Detectar la intención del mensaje
   const esSaludo =
     /^(hola|buenos días|buenas tardes|buenas noches|buenas)$/i.test(t);
 
   const esServicios =
     /servicios|qué hacen|que hacen|qué ofrecen|que ofrecen|qué instalan|que instalan/.test(t);
 
-  const esComercial =
-    /cotiz|precio|valor|cuánto cuesta|cuanto cuesta|instal|repar|mantención|mantencion|automatiz|portón nuevo|porton nuevo|cámara|camara|cerco eléctrico|cerco electrico|barrera|citófono|citofono|videoportero|iluminación|iluminacion|puerta de seguridad/.test(t);
-
   const esUbicacion =
     /dónde atienden|donde atienden|ubicación|ubicacion|en qué comunas|en que comunas/.test(t);
+
+  const esComercial =
+    /cotiz|precio|valor|cuánto cuesta|cuanto cuesta|instal|repar|mantención|mantencion|automatiz|portón nuevo|porton nuevo|cámara|camara|cerco eléctrico|cerco electrico|barrera|citófono|citofono|videoportero|iluminación|iluminacion|puerta de seguridad/.test(t);
 
   const esTecnico =
     /no cierra|no abre|no funciona|se detiene|se devuelve|vuelve a abrir|fotocelda|control remoto|motor.*falla|port[oó]n.*falla|port[oó]n.*no/.test(t);
 
+  // Identificar datos comerciales que el cliente ya entregó
+  const tipoPorton = /corredera|corredizo/.test(t) ? "corredera" :
+    /batiente|abatible/.test(t) ? "batiente" :
+    /autoportante|autoportado/.test(t) ? "autoportante" : "";
+
+  const usoCasa = /mi casa|en casa|vivienda|domicilio|residencial/.test(t);
+
+  const medidas = t.match(/(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m)\s*(?:de\s*)?(?:ancho|largo)?(?:\s*(?:por|x|×)\s*(\d+(?:[.,]\d+)?)\s*(?:metros|metro|m))?/);
+
+  const ancho = medidas ? medidas[1] : "";
+  const alto = medidas && medidas[2] ? medidas[2] : "";
+
+  // Saludo: comenzar una conversación nueva
   if (esSaludo) {
     etapa = "inicio";
+    tema = "";
     datos = [];
     return "¡Hola! Soy el asistente de PortonMatic. Puedo orientarte sobre problemas con portones y motores, o ayudarte con instalaciones, reparaciones y otros servicios. ¿Qué necesitas?";
   }
 
+  // Pregunta general por servicios
   if (esServicios) {
     etapa = "inicio";
+    tema = "";
     datos = [];
     return "PortonMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía, sistemas eléctricos de respaldo y otros servicios de construcción. ¿Cuál te interesa?";
   }
 
+  // Consulta de cobertura
   if (esUbicacion) {
     etapa = "inicio";
+    tema = "";
     datos = [];
     return "PortonMatic contempla atención en El Tabo, Colina y Santiago. ¿En qué comuna necesitas el servicio? La disponibilidad debe confirmarse.";
   }
 
-  // 2. Iniciar un flujo comercial nuevo.
-  if (esComercial) {
-    etapa = "comercial";
+  // Iniciar o actualizar una solicitud comercial
+  if (esComercial || etapa === "comercial" || etapa === "comercial2" ||
+      etapa === "comercial3") {
+
+    if (etapa !== "comercial" && etapa !== "comercial2" &&
+        etapa !== "comercial3") {
+      datos = [];
+    }
+
     tema = "comercial";
-    datos = [texto];
-    return "Con gusto te orientamos. ¿Buscas una instalación nueva, una reparación o una mantención? Si conoces el tipo de portón, sus medidas o el equipo que tienes, cuéntame.";
+
+    if (t.includes("corredera") || t.includes("corredizo")) {
+      datos.push("Tipo: portón corredera");
+    } else if (t.includes("batiente") || t.includes("abatible")) {
+      datos.push("Tipo: portón batiente");
+    } else if (t.includes("autoportante")) {
+      datos.push("Tipo: portón autoportante");
+    }
+
+    if (usoCasa) datos.push("Uso: vivienda particular");
+    if (ancho && alto) {
+      datos.push("Medidas indicadas: " + ancho + " m de ancho por " + alto + " m de alto");
+    }
+
+    // Evitar repetir preguntas si ya tenemos tipo y uso
+    if (tipoPorton && usoCasa && !(ancho && alto)) {
+      etapa = "comercial2";
+      return "¡Perfecto! Entonces buscas instalar un portón " + tipoPorton +
+        " para tu casa. ¿Qué medidas tendrá aproximadamente: ancho por alto? Si aún no las conoces, podemos continuar con los demás antecedentes.";
+    }
+
+    if (tipoPorton && ancho && alto) {
+      etapa = "comercial3";
+      return "Gracias. Tengo estos antecedentes: portón " + tipoPorton +
+        ", de " + ancho + " m de ancho por " + alto +
+        " m de alto" + (usoCasa ? ", para vivienda particular" : "") +
+        ". ¿En qué comuna se instalará y necesitas que incluya motor automático?";
+    }
+
+    if (etapa === "comercial2" || etapa === "comercial3") {
+      datos.push(texto);
+      etapa = "comercial3";
+      return "Gracias por ese dato. ¿En qué comuna se realizará la instalación y necesitas incluir automatización con motor?";
+    }
+
+    etapa = "comercial";
+    return "Con gusto te orientamos. ¿Qué tipo de portón necesitas: corredera, batiente o autoportante? Si ya conoces las medidas y si es para una casa, condominio o empresa, indícamelo para no hacerte preguntas innecesarias.";
   }
 
-  // 3. Iniciar un diagnóstico técnico nuevo.
-  if (esTecnico && etapa !== "diagnostico" &&
-      etapa !== "diagnostico2" && etapa !== "diagnostico3") {
-    etapa = "diagnostico";
+  // Diagnóstico técnico
+  if (esTecnico) {
     tema = "tecnico";
+    etapa = "diagnostico";
     datos = [texto];
     return "Vamos a revisar las posibles causas. ¿Qué hace exactamente el portón: el motor no responde, intenta moverse y se detiene, o comienza a cerrar y vuelve a abrirse? Si puedes, dime también si es corredera o batiente.";
   }
 
-  // 4. Continuar el diagnóstico técnico.
   if (etapa === "diagnostico") {
     datos.push(texto);
     etapa = "diagnostico2";
@@ -1109,41 +1166,10 @@ function responder(texto) {
   if (etapa === "diagnostico3") {
     datos.push(texto);
     etapa = "inicio";
-    return "Gracias. Estos son los antecedentes que recopilamos: " +
+    tema = "";
+    return "Gracias. Hemos recopilado estos antecedentes: " +
       datos.join(" / ") +
-      ". No es posible confirmar la causa a distancia. Puedes consultar la disponibilidad de una revisión técnica por WhatsApp.";
-  }
-
-  // 5. Continuar la atención comercial.
-  if (etapa === "comercial") {
-    datos.push(texto);
-    etapa = "comercial2";
-    return "Gracias. ¿En qué comuna necesitas el servicio y se trata de una instalación nueva, una reparación o una mantención?";
-  }
-
-  if (etapa === "comercial2") {
-    datos.push(texto);
-    etapa = "inicio";
-    const mensaje =
-      "Hola, PortonMatic. Quisiera consultar por un servicio: " +
-      datos.join(" / ");
-
-    const enlace =
-      "https://wa.me/56994124894?text=" +
-      encodeURIComponent(mensaje);
-
-    const boton = document.createElement("a");
-    boton.href = enlace;
-    boton.target = "_blank";
-    boton.rel = "noopener noreferrer";
-    boton.textContent = "Continuar por WhatsApp";
-    boton.className = "asistente-boton";
-    boton.style.display = "inline-block";
-    boton.style.marginTop = "10px";
-    boton.style.textDecoration = "none";
-    mensajes.appendChild(boton);
-
-    return "Ya preparé el resumen de tu consulta. Puedes revisarlo y continuar voluntariamente por WhatsApp.";
+      ". No podemos confirmar la causa a distancia, pero puedes consultar por WhatsApp la disponibilidad de una revisión técnica.";
   }
 
   if (/urgente|emergencia|24 horas|24\/7/.test(t)) {
