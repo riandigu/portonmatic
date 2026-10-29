@@ -1156,20 +1156,23 @@ function responder(texto) {
 }
 
 
-  formulario.addEventListener("submit", function (evento) {
-    evento.preventDefault();
+  
+formulario.addEventListener("submit", function (evento) {
+  evento.preventDefault();
 
-    const texto = entrada.value.trim();
-    if (!texto) return;
+  const texto = entrada.value.trim();
+  if (!texto) return;
 
-    agregarMensaje(texto, "cliente");
-    entrada.value = "";
+  agregarMensaje(texto, "cliente");
+  entrada.value = "";
 
-    const respuesta = responder(texto);
-    if (respuesta) {
-      agregarMensaje(respuesta, "asistente");
-    }
-  });
+  const respuesta = responder(texto);
+
+  if (respuesta) {
+    agregarMensaje(respuesta, "asistente");
+  }
+});
+
 })();
 </script>
 
