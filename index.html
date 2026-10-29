@@ -626,7 +626,7 @@
 
 <!-- === ASISTENTE INTELIGENTE PORTONMATIC === -->
 <section id="asistente">
-  <h2>Asistente PortonMatic</h2>
+  <h2>Asistente PortónMatic</h2>
 
   <div class="asistente-contenedor">
     <p>
@@ -1196,7 +1196,7 @@ if (etapa === "camaras5") {
     etapa = "camaras";
     tema = "camaras";
 
-    return "Sí, PortonMatic ofrece cámaras de seguridad y sistemas DVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
+    return "Sí, PortónMatic ofrece cámaras de seguridad y sistemas DVR. ¿Necesitas una instalación nueva, una reparación o una consulta sobre un sistema existente?";
   }
 
 
@@ -1205,7 +1205,7 @@ if (etapa === "camaras5") {
     etapa = "inicio";
     tema = "";
     datos = [];
-    return "PortonMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía, sistemas eléctricos de respaldo y otros servicios de construcción. ¿Cuál te interesa?";
+    return "PortónMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía, sistemas eléctricos de respaldo y otros servicios de construcción. ¿Cuál te interesa?";
   }
 
   // Consulta de cobertura
@@ -1213,7 +1213,7 @@ if (etapa === "camaras5") {
     etapa = "inicio";
     tema = "";
     datos = [];
-    return "PortonMatic contempla atención en El Tabo, Colina y Santiago. ¿En qué comuna necesitas el servicio? La disponibilidad debe confirmarse.";
+    return "PortónMatic contempla atención en El Tabo, Colina y Santiago. ¿En qué comuna necesitas el servicio? La disponibilidad debe confirmarse.";
   }
 
   
@@ -1440,13 +1440,13 @@ if (etapa === "diagnostico3") {
   datos.push(texto);
 
   const resumen =
-    "Consulta técnica PortonMatic:\n" +
+    "Consulta técnica PortónMatic:\n" +
     datos.join("\n");
 
   const enlace =
     "https://wa.me/56994124894?text=" +
     encodeURIComponent(
-      "Hola, PortonMatic. Quisiera consultar por una revisión técnica.\n\n" +
+      "Hola, PortónMatic. Quisiera consultar por una revisión técnica.\n\n" +
       resumen
     );
 
@@ -1482,7 +1482,7 @@ if (etapa === "diagnostico3") {
   if (/urgente|emergencia|24 horas|24\/7/.test(t)) {
     etapa = "inicio";
     datos = [];
-    return "PortonMatic contempla atención móvil 24/7, sujeta a disponibilidad. ¿En qué comuna estás y qué problema necesitas resolver?";
+    return "PortónMatic contempla atención móvil 24/7, sujeta a disponibilidad. ¿En qué comuna estás y qué problema necesitas resolver?";
   }
 
   return "Quiero orientarte correctamente. ¿Tu consulta es sobre una falla técnica, una instalación o cotización, o necesitas información sobre los servicios de PortonMatic?";
