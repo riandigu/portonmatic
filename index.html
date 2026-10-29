@@ -1009,5 +1009,147 @@
 </a>
 
 
+<script>
+/* === PORTONMATIC: LOGICA INICIAL DEL ASISTENTE === */
+(function () {
+  const formulario = document.getElementById("asistente-formulario");
+  const entrada = document.getElementById("asistente-pregunta");
+  const mensajes = document.getElementById("asistente-mensajes");
+
+  if (!formulario || !entrada || !mensajes) {
+    console.warn("No se encontraron los elementos del asistente.");
+    return;
+  }
+
+  let etapa = "inicio";
+  let tema = "";
+  let datos = [];
+
+  function agregarMensaje(texto, tipo) {
+    const mensaje = document.createElement("div");
+    mensaje.className = tipo === "cliente"
+      ? "mensaje-cliente"
+      : "mensaje-asistente";
+    mensaje.textContent = texto;
+    mensajes.appendChild(mensaje);
+    mensajes.scrollTop = mensajes.scrollHeight;
+  }
+
+  function responder(texto) {
+    const t = texto.toLowerCase().trim();
+
+    if (!t) return "";
+
+    if (etapa === "diagnostico") {
+      datos.push(texto);
+
+      if (datos.length === 1) {
+        etapa = "diagnostico2";
+        return "Gracias. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+      }
+
+      etapa = "diagnostico3";
+      return "Entiendo. Con esos antecedentes podemos orientar mejor la revisión, aunque todavía no podemos confirmar la causa. ¿En qué comuna está instalado el portón? Así podremos evaluar la atención técnica.";
+    }
+
+    if (etapa === "diagnostico2") {
+      datos.push(texto);
+      etapa = "diagnostico3";
+      return "Gracias por la información. ¿En qué comuna está instalado el portón? Con eso podremos orientar el siguiente paso para una posible revisión técnica.";
+    }
+
+    if (etapa === "diagnostico3") {
+      datos.push(texto);
+      etapa = "inicio";
+      return "Perfecto. Ya tenemos los antecedentes iniciales: " +
+        datos.join(" / ") +
+        ". Puedes contactar a PortonMatic por WhatsApp para consultar la disponibilidad de una revisión técnica. No manipules cables ni mecanismos eléctricos; si hay humo, chispas o riesgo eléctrico, suspende el uso y corta la alimentación solo si puedes hacerlo de forma segura.";
+    }
+
+    if (etapa === "comercial") {
+      datos.push(texto);
+      etapa = "comercial2";
+      return "Gracias. ¿En qué comuna necesitas el servicio y se trata de una instalación nueva, una reparación o una mantención?";
+    }
+
+    if (etapa === "comercial2") {
+      datos.push(texto);
+      etapa = "inicio";
+      const resumen = datos.join(" / ");
+      const mensaje = "Hola, PortonMatic. Quisiera consultar por un servicio. " + resumen;
+      const enlace = "https://wa.me/56994124894?text=" +
+        encodeURIComponent(mensaje);
+
+      const aviso = document.createElement("div");
+      aviso.className = "mensaje-asistente";
+      aviso.textContent =
+        "Con lo que me cuentas, podemos preparar tu consulta para el equipo comercial. Usa el botón siguiente para continuar por WhatsApp.";
+      mensajes.appendChild(aviso);
+
+      const boton = document.createElement("a");
+      boton.href = enlace;
+      boton.target = "_blank";
+      boton.rel = "noopener noreferrer";
+      boton.textContent = "Continuar por WhatsApp";
+      boton.className = "asistente-boton";
+      boton.style.display = "inline-block";
+      boton.style.marginTop = "10px";
+      boton.style.textDecoration = "none";
+      mensajes.appendChild(boton);
+      mensajes.scrollTop = mensajes.scrollHeight;
+
+      return "";
+    }
+
+    if (/hola|buenos días|buenas tardes|buenas noches/.test(t)) {
+      return "¡Hola! Soy el asistente de PortonMatic. Puedo orientarte sobre problemas con portones y motores, o ayudarte a consultar por instalaciones, reparaciones y otros servicios. ¿Qué necesitas?";
+    }
+
+    if (/no cierra|no abre|no funciona|se detiene|se devuelve|vuelve a abrir|fotocelda|fotocelda|control remoto|motor.*falla|portón.*falla|porton.*falla/.test(t)) {
+      tema = "tecnico";
+      etapa = "diagnostico";
+      datos = [texto];
+      return "Vamos a revisar las posibles causas. Primero, ¿qué hace exactamente el portón: el motor no responde, intenta moverse y se detiene, o comienza a cerrar y vuelve a abrirse? Si puedes, indícame también si es corredera o batiente.";
+    }
+
+    if (/cotiz|precio|valor|cuánto cuesta|cuanto cuesta|instal|repar|mantención|mantencion|automatiz|portón nuevo|porton nuevo|cámara|camara|cerco eléctrico|cerco electrico|barrera|citófono|citofono|videoportero|iluminación|iluminacion|puerta de seguridad/.test(t)) {
+      tema = "comercial";
+      etapa = "comercial";
+      datos = [texto];
+      return "Con gusto te orientamos. Para entender mejor lo que necesitas, ¿buscas una instalación nueva, una reparación o una mantención? Si conoces el tipo de equipo o sus medidas, también puedes indicármelos.";
+    }
+
+    if (/servicios|qué hacen|que hacen|qué ofrecen|que ofrecen/.test(t)) {
+      return "PortonMatic ofrece fabricación, instalación y reparación de portones corredera, batientes y autoportantes; automatización y servicio técnico de motores; barreras de acceso, controles y fotoceldas; cercos eléctricos y mallas de seguridad; puertas de seguridad; iluminación LED perimetral; cámaras, citofonía y otros servicios de construcción. ¿Cuál te interesa?";
+    }
+
+    if (/comuna|dónde atienden|donde atienden|ubicación|ubicacion/.test(t)) {
+      return "Entre las zonas que PortonMatic contempla están El Tabo, Colina y Santiago. Cuéntame en qué comuna necesitas atención para orientarte mejor.";
+    }
+
+    if (/urgente|emergencia|24 horas|24\/7/.test(t)) {
+      return "PortonMatic contempla atención móvil 24/7. La disponibilidad y el tiempo de llegada deben confirmarse directamente. ¿En qué comuna estás y qué problema necesitas resolver?";
+    }
+
+    return "Quiero orientarte correctamente. ¿Tu consulta es sobre un problema técnico con un equipo, una instalación o reparación, o necesitas información sobre otro servicio de PortonMatic?";
+  }
+
+  formulario.addEventListener("submit", function (evento) {
+    evento.preventDefault();
+
+    const texto = entrada.value.trim();
+    if (!texto) return;
+
+    agregarMensaje(texto, "cliente");
+    entrada.value = "";
+
+    const respuesta = responder(texto);
+    if (respuesta) {
+      agregarMensaje(respuesta, "asistente");
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
