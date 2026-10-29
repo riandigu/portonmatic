@@ -1248,13 +1248,17 @@ function responder(texto) {
     return "";
   }
 
-  // Diagnóstico técnico
-  if (esTecnico) {
+ 
+  // Diagnóstico técnico: iniciar solo si no hay uno en curso
+  if (esTecnico && etapa !== "diagnostico" &&
+      etapa !== "diagnostico2" && etapa !== "diagnostico3") {
     tema = "tecnico";
     etapa = "diagnostico";
     datos = [texto];
+
     return "Vamos a revisar las posibles causas. ¿Qué hace exactamente el portón: el motor no responde, intenta moverse y se detiene, o comienza a cerrar y vuelve a abrirse? Si puedes, dime también si es corredera o batiente.";
   }
+
 
   if (etapa === "diagnostico") {
     datos.push(texto);
