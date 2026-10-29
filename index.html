@@ -1280,6 +1280,28 @@ if (etapa === "diagnostico") {
 }
 
 
+if (etapa === "diagnostico_observacion") {
+  datos.push(texto);
+
+  const observacion = texto.toLowerCase();
+
+  if (/sí|si|suciedad|sucias|obstru|objeto|hojas|piedra/.test(observacion)) {
+    etapa = "diagnostico2";
+
+    return "Podría existir una obstrucción o interferencia, pero aún no está confirmado. Si puedes hacerlo sin acercarte al portón en movimiento, retira únicamente objetos sueltos del recorrido y limpia suavemente la superficie exterior de las fotoceldas, sin desmontarlas ni manipular cables. Después, dime si el problema continúa. Si el portón se mueve inesperadamente, deja de accionarlo y solicita una revisión técnica.";
+  }
+
+  if (/no|nada|limpias|despejado|despejada/.test(observacion)) {
+    etapa = "diagnostico2";
+
+    return "Gracias. Aunque no se observe suciedad ni obstáculos, todavía podría existir un problema de alineación, funcionamiento de las fotoceldas o ajuste del motor. No manipules conexiones ni ajustes internos. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+  }
+
+  etapa = "diagnostico2";
+
+  return "Gracias por la observación. No podemos confirmar la causa solo con ese dato. ¿El problema ocurre siempre o solamente a veces? ¿Has notado algún ruido extraño o alguna luz parpadeando en el motor?";
+}
+
   if (etapa === "diagnostico2") {
     datos.push(texto);
     etapa = "diagnostico3";
