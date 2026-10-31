@@ -59,39 +59,35 @@ html {
     }
 
     @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        background-color: #0A1F44;
-        position: absolute;
-        top: 70px;
-        right: 0;
-        width: 200px;
-        padding: 10px;
-      }
+  header {
+    height: 55px;
+  }
 
-      nav a {
-        margin: 10px 0;
-      }
+  nav {
+    display: none;
+    flex-direction: column;
+    background-color: #0A1F44;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 200px;
+    padding: 5px 10px;
+  }
 
-           .menu-toggle {
-        display: block;
-        margin-right: 35px;
-      }
+  nav a {
+    margin: 6px 0;
+    padding: 5px 0;
+  }
 
-      nav.active {
-        display: flex;
-      }
-    }
+  .menu-toggle {
+    display: block;
+    margin-right: 35px;
+  }
 
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-    
-    /* Desplazamiento del menú solo en escritorio */
-    @media (min-width: 769px) {
+  nav.active {
+    display: flex;
+  }
+}    @media (min-width: 769px) {
       #nav {
         margin-right: 90px;
       }
