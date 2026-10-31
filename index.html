@@ -7,9 +7,13 @@
 
 
 <style>
-  html, body {
-    scroll-behavior: auto !important;
-  }
+html {
+  scroll-behavior: auto !important;
+}
+
+#contacto {
+  scroll-margin-top: 70px;
+}
 
   body {
     margin: 0;
@@ -976,10 +980,10 @@ document.querySelectorAll('#nav a[href^="#"]').forEach(link => {
 const esMovil = window.innerWidth <= 768;
 
 const ajustes = {
-  inicio: esMovil ? 85 : 85,
-  servicios: esMovil ? 85 : 85,
-  nosotros: esMovil ? 60 : 60,
-  contacto: esMovil ? 150 : 200
+  inicio: 85,
+  servicios: 85,
+  nosotros: 60,
+  contacto: 70
 };
 
     const ajuste = ajustes[id] ?? 85;
