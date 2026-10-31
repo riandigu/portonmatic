@@ -7,27 +7,9 @@
 
 
 <style>
-  * {
-    box-sizing: border-box;
+  html, body {
+    scroll-behavior: auto !important;
   }
-
-html {
-  scroll-behavior: auto;
-  scroll-padding-top: 0;
-}
-
-section[id] {
-  scroll-margin-top: 85px;
-}
-
-section[id] {
-  scroll-margin-top: 85px;
-}
-}
-
-section[id] {
-  scroll-margin-top: 90px;
-}
 
   body {
     margin: 0;
@@ -978,14 +960,26 @@ document.querySelectorAll('#nav a[href^="#"]').forEach(link => {
 
     if (!destino) return;
 
-    const alturaHeader = document.querySelector('header').offsetHeight;
+    // Posición personalizada para cada sección
+    const ajustes = {
+      inicio: 85,
+      servicios: 85,
+      nosotros: 80,
+      contacto: 55
+    };
+
+    const ajuste = ajustes[id] ?? 85;
 
     const posicion = destino.getBoundingClientRect().top +
                      window.pageYOffset -
-                     alturaHeader -
-                     15;
+                     ajuste;
 
-    window.scrollTo(0, posicion);
+    // Salto inmediato, sin animación
+    window.scrollTo({
+      top: posicion,
+      left: 0,
+      behavior: 'instant'
+    });
 
     history.replaceState(null, '', '#' + id);
   });
