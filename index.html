@@ -84,9 +84,12 @@
       margin: 0 10px;
       text-decoration: none;
     }
-      /* Desplazamiento horizontal del menú */
-    #nav {
-      margin-right: 35px;
+    
+    /* Desplazamiento del menú solo en escritorio */
+    @media (min-width: 769px) {
+      #nav {
+        margin-right: 90px;
+      }
     }
 
     .hero {
