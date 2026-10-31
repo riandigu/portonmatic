@@ -967,27 +967,27 @@ toggle.onclick = () => {
   nav.classList.toggle('active');
 };
 
-document.querySelectorAll('#nav a').forEach(link => {
+document.querySelectorAll('#nav a[href^="#"]').forEach(link => {
   link.addEventListener('click', function(event) {
-    const destino = document.querySelector(this.getAttribute('href'));
+    event.preventDefault();
+
+    const id = this.getAttribute('href').substring(1);
+    const destino = document.getElementById(id);
 
     nav.classList.remove('active');
 
-    if (destino) {
-      event.preventDefault();
+    if (!destino) return;
 
-      const posicion =
-        destino.getBoundingClientRect().top +
-        window.scrollY -
-        90;
+    const alturaHeader = document.querySelector('header').offsetHeight;
 
-      history.pushState(null, '', this.getAttribute('href'));
+    const posicion = destino.getBoundingClientRect().top +
+                     window.pageYOffset -
+                     alturaHeader -
+                     15;
 
-      window.scrollTo({
-        top: posicion,
-        behavior: 'smooth'
-      });
-    }
+    window.scrollTo(0, posicion);
+
+    history.replaceState(null, '', '#' + id);
   });
 });
 
