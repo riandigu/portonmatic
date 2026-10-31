@@ -972,13 +972,15 @@ document.querySelectorAll('#nav a[href^="#"]').forEach(link => {
 
     if (!destino) return;
 
-    // Posición personalizada para cada sección
-    const ajustes = {
-      inicio: 85,
-      servicios: 85,
-      nosotros: 60,
-      contacto: 200
-    };
+// Posición personalizada según dispositivo
+const esMovil = window.innerWidth <= 768;
+
+const ajustes = {
+  inicio: esMovil ? 85 : 85,
+  servicios: esMovil ? 85 : 85,
+  nosotros: esMovil ? 60 : 60,
+  contacto: esMovil ? 150 : 200
+};
 
     const ajuste = ajustes[id] ?? 85;
 
