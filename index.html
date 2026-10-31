@@ -58,9 +58,13 @@ html {
       cursor: pointer;
     }
 
-    @media (max-width: 768px) {
+   @media (max-width: 768px) {
   header {
-    height: 65px;
+    height: 70px;
+  }
+
+  body {
+    padding-top: 70px;
   }
 
   nav {
@@ -68,15 +72,18 @@ html {
     flex-direction: column;
     background-color: #0A1F44;
     position: absolute;
-    top: 65px;
+    top: 70px;
     right: 0;
     width: 200px;
     padding: 5px 10px;
   }
 
   nav a {
-    margin: 6px 0;
-    padding: 5px 0;
+    margin: 8px 0;
+    padding: 10px 5px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
   .menu-toggle {
@@ -87,12 +94,13 @@ html {
   nav.active {
     display: flex;
   }
-}    @media (min-width: 769px) {
-      #nav {
-        margin-right: 90px;
-      }
-    }
+}
 
+@media (min-width: 769px) {
+  #nav {
+    margin-right: 90px;
+  }
+}
     .hero {
       background: url('fondo.jpg') center/cover no-repeat;
       height: 70vh;
