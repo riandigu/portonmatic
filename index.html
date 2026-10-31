@@ -11,14 +11,22 @@
       font-family: Arial, sans-serif;
       color: #0A1F44;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #0A1F44;
-      color: white;
-    }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #0A1F44;
+  color: white;
+
+  /* Barra superior fija */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
     header img {
       height: 50px;
     }
