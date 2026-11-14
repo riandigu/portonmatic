@@ -1174,6 +1174,23 @@ const ajustes = {
   document.getElementById("motorWhatsapp").href =
     "https://wa.me/56994124894?text=" + mensaje;
 }
+
+const miniTrack = document.querySelector('.mini-carrusel-track');
+
+document.querySelector('.mini-prev').addEventListener('click', () => {
+  miniTrack.scrollBy({
+    left: -miniTrack.clientWidth,
+    behavior: 'smooth'
+  });
+});
+
+document.querySelector('.mini-next').addEventListener('click', () => {
+  miniTrack.scrollBy({
+    left: miniTrack.clientWidth,
+    behavior: 'smooth'
+  });
+});
+  
 </script>
 
 
